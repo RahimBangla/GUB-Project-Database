@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.route("/test").get(getAllNotes).post(createNote);
-router.route("/test/:id").get(getSingleNote).patch(updateNote).delete(deleteNote);
+router.route("/api").get(getAllNotes).post(createNote);
+router.route("/api/:id").get(getSingleNote).patch(updateNote).delete(deleteNote);
 
 export default router;
