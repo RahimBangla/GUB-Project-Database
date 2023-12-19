@@ -42,14 +42,14 @@ export const getSingleNote = tryCatchWrapper(async function (req, res, next) {
  */
 export const createVehicle = tryCatchWrapper(async function (req, res, next) {
   const { vehicle_type, mechanical_problem, license_number } = req.body;
- console.log(req.body);
   if (!vehicle_type || !mechanical_problem || !license_number)
-    return next(createCustomError("All fields are required", 400));
+  return next(createCustomError("All fields are required", 400));
+const [rows] = await pool.query("SELECT MAX(vehicle_id) AS id FROM vehicles");
+console.log( rows[0].id);
+  let sql = "INSERT INTO vehicles (vehicle_id , vehicle_type, mechanical_problem, license_number) VALUES (?, ?, ?, ?)";
+  await pool.query(sql, [rows[0].id+1, vehicle_type, mechanical_problem, license_number]);
 
-  let sql = "INSERT INTO vehicles (vehicle_type, mechanical_problem, license_number) VALUES (?, ?, ?)";
-  await pool.query(sql, [vehicle_type, mechanical_problem, license_number]);
-
-  return res.status(201).json({ message: "note has been created" });
+  return res.status(201).json({ message: "Vehicle has been created" });
 });
 
 /**
