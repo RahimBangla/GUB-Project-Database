@@ -6,9 +6,13 @@ import {
   getSingleNote,
   updateNote,
 } from "./notes.controllers.js";
+import {
+  createVehicle,
+} from "./vehicle.controllers.js";
 
 const router = express.Router();
 
+router.route("/vehicle").get(getAllNotes).post(createVehicle);
 router.route("/api").get(getAllNotes).post(createNote);
 router.route("/api/:id").get(getSingleNote).patch(updateNote).delete(deleteNote);
 

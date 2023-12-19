@@ -38,7 +38,7 @@ app.get("/ok", (req, res) => {
   res.send("<html> <head>server Response</head><body><h1> This page was render direcly from the server <p>Hello there welcome to my website</p></h1></body></html>");
 });
 // api routes
-app.use("/notes", notesRoute);
+app.use("/api", notesRoute);
 // Define the directory where your static files (including HTML) are located
 app.use(express.static('public'))
 app.use(notFound);
