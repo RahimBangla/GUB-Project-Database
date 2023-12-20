@@ -5,8 +5,8 @@ import { tryCatchWrapper } from "../../middlewares/tryCatchWrapper.js";
 /**
  * @returns note object
  */
-async function getNote(id) {
-  let sql = "SELECT * FROM notes WHERE id = ?";
+async function getVehicle(id) {
+  let sql = "SELECT * FROM Vehicles WHERE vehicle_id = ?";
   const [rows] = await pool.query(sql, [id]);
   return rows[0];
 }
@@ -15,8 +15,8 @@ async function getNote(id) {
  * @description Get All note
  * @route GET /notes
  */
-export const getAllNotes = tryCatchWrapper(async function (req, res, next) {
-  let sql = "SELECT * from notes";
+export const getAllVehicle = tryCatchWrapper(async function (req, res, next) {
+  let sql = "SELECT * from Vehicles";
   const [rows] = await pool.query(sql);
   if (!rows.length) return res.status(204).json({ message: "empty list" });
 
@@ -27,10 +27,10 @@ export const getAllNotes = tryCatchWrapper(async function (req, res, next) {
  * @description Get Single note
  * @route GET /notes/:id
  */
-export const getSingleNote = tryCatchWrapper(async function (req, res, next) {
+export const getSingleVehicle = tryCatchWrapper(async function (req, res, next) {
   const { id } = req.params;
 
-  const note = await getNote(id);
+  const note = await getVehicle(id);
   if (!note) return next(createCustomError("note not found", 404));
 
   return res.status(200).json(note);
@@ -56,18 +56,18 @@ console.log( rows[0].id);
  * @description Update note
  * @route PATCH /notes/:id
  */
-export const updateNote = tryCatchWrapper(async function (req, res, next) {
+export const updateVehicle = tryCatchWrapper(async function (req, res, next) {
   const { id } = req.params;
-  const { title, contents } = req.body;
+  const { vehicle_type, mechanical_problem, license_number  } = req.body;
 
-  if (!id || !title || !contents)
+  if (!id || !vehicle_type || !mechanical_problem || !license_number)
     return next(createCustomError("All fields are required", 400));
 
-  const note = await getNote(id);
+  const note = await getVehicle(id);
   if (!note) return next(createCustomError("note not found", 404));
 
-  let sql = "UPDATE notes SET title = ? , contents = ? WHERE id = ?";
-  await pool.query(sql, [title, contents, id]);
+  let sql = "UPDATE vehicle SET vehicle_type = ?, mechanical_problem = ?, license_number = ? WHERE vehicle_id = ?";
+  await pool.query(sql, [vehicle_type, mechanical_problem, license_number, id]);
 
   return res.status(201).json({ message: "note has been updated" });
 });
@@ -76,15 +76,15 @@ export const updateNote = tryCatchWrapper(async function (req, res, next) {
  * @description Delete note
  * @route DELETE /notes/:id
  */
-export const deleteNote = tryCatchWrapper(async function (req, res, next) {
+export const deleteVehicle = tryCatchWrapper(async function (req, res, next) {
   const { id } = req.params;
 
   if (!id) return next(createCustomError("Id is required", 400));
 
-  const note = await getNote(id);
+  const note = await getVehicle(id);
   if (!note) return next(createCustomError("note not found", 404));
 
-  let sql = "DELETE FROM notes WHERE id = ?";
+  let sql = "DELETE FROM vehicle WHERE vehicle_id = ?";
   await pool.query(sql, [id]);
 
   return res.status(200).json({ message: "note has been deleted" });
