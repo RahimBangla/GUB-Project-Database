@@ -18,6 +18,13 @@ import {
   updateVehicle
 } from "./vehicle.controllers.js";
 
+import { } from "./accident.controllers.js";
+import { } from "./driver.controllers.js";
+import { } from "./log.controllers.js";
+import { } from "./police.controllers.js";
+import { } from "./victims.controllers.js";
+import { } from "./witnesses.controllers.js";
+
 const router = express.Router();
 router.route("/login").post(Login);
 router.route("/singup").post(SingUp);
