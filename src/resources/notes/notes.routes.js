@@ -23,6 +23,22 @@ router.route("/login").post(Login);
 router.route("/singup").post(SingUp);
 router.route("/vehicle").get(getAllVehicle).post(createVehicle);
 router.route("/vehicle/:id").get(getSingleVehicle).patch(updateVehicle).delete(deleteVehicle);
+
+router.route("/vehicle").get(getAllVehicle).post(createVehicle);
+router.route("/vehicle/:id").get(getSingleVehicle).patch(updateVehicle).delete(deleteVehicle);
+
+router.route("/vehicle").get(getAllVehicle).post(createVehicle);
+router.route("/vehicle/:id").get(getSingleVehicle).patch(updateVehicle).delete(deleteVehicle);
+
+router.route("/vehicle").get(getAllVehicle).post(createVehicle);
+router.route("/vehicle/:id").get(getSingleVehicle).patch(updateVehicle).delete(deleteVehicle);
+
+router.route("/vehicle").get(getAllVehicle).post(createVehicle);
+router.route("/vehicle/:id").get(getSingleVehicle).patch(updateVehicle).delete(deleteVehicle);
+
+router.route("/vehicle").get(getAllVehicle).post(createVehicle);
+router.route("/vehicle/:id").get(getSingleVehicle).patch(updateVehicle).delete(deleteVehicle);
+
 router.route("/api").get(getAllNotes).post(createNote);
 router.route("/api/:id").get(getSingleNote).patch(updateNote).delete(deleteNote);
 
