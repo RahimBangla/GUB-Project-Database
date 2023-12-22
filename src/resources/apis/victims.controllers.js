@@ -45,9 +45,9 @@ export const createVictim = tryCatchWrapper(async function (req, res, next) {
   if (!name || !age || !gender || !injury_type)
   return next(createCustomError("All fields are required", 400));
 const [rows] = await pool.query("SELECT MAX(victim_id) AS id FROM victims");
-console.log( rows[0].id);
-  let sql = "INSERT INTO victims (victim_id , name, age, gender, injury_type) VALUES (?, ?, ?, ?)";
-  await pool.query(sql, [rows[0].id+1, name, age, gender, injury_type]);
+console.log( rows);
+  let sql = "INSERT INTO victims (victim_id , name, age, gender, injury_type) VALUES (?, ?, ?, ?, ?)";
+  await pool.query(sql, [rows[0].id  ? rows[0].id+1 : 1, name, age, gender, injury_type]);
 
   return res.status(201).json({ message: "Victim has been created", status: true  });
 });

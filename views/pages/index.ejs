@@ -12,7 +12,6 @@
 
          <%- include('../partials/header'); %>
 
-
             <div class="container-fluid pb-3 pt-2" id="notlogged">
                <div class="d-grid gap-3" style="grid-template-columns: 1fr 2fr;">
                   <div class="bg-body-tertiary border rounded-3">
@@ -47,34 +46,15 @@
             </div>
 
             <div id="logged" hidden>
-               <%- include('../components/vehicle'); %>
+
+               <%- include('../partials/navbar'); %>
 
 
-                  <div class="row align-items-md-stretch">
-                     <div class="col-md-6">
-                        <div class="h-100 p-5 text-bg-dark rounded-3">
-                           <h2>Change the background</h2>
-                           <p>Swap the background-color utility and add a `.text-*` color utility to mix up the
-                              jumbotron
-                              look.
-                              Then, mix and match with additional component themes and more.</p>
-                           <button class="btn btn-outline-light" type="button">Example button</button>
-                        </div>
-                     </div>
-                     <div class="col-md-6">
-                        <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                           <h2>Add borders</h2>
-                           <p>Or, keep it light and add a border for some added definition to the boundaries of your
-                              content.
-                              Be
-                              sure to look under the hood at the source HTML here as we've adjusted the alignment and
-                              sizing
-                              of
-                              both column's content for equal-height.</p>
-                           <button class="btn btn-outline-secondary" type="button">Example button</button>
-                        </div>
-                     </div>
-                  </div>
+                  <%- include('../components/vehicle'); %>
+                     <%- include('../components/victim'); %>
+
+
+
             </div>
 
 
@@ -138,6 +118,7 @@
       function logout() {
          localStorage.setItem("status", false);
          localStorage.setItem("username", "");
+         document.getElementById("fullNameT").hidden = true;
          document.getElementById("logged").hidden = true;
          document.getElementById("notlogged").hidden = false;
          document.getElementById("lout").hidden = true;
@@ -171,6 +152,8 @@
                   if (data.status == true) {
                      localStorage.setItem("status", data.status);
                      localStorage.setItem("username", JSON.stringify(data));
+                     document.getElementById("fullNameT").innerHTML = JSON.parse(localStorage.getItem("username")).data.fullName;
+                     document.getElementById("fullNameT").hidden = false;
                      document.getElementById("logged").hidden = false;
                      document.getElementById("notlogged").hidden = true;
                      document.getElementById("lout").hidden = false;
