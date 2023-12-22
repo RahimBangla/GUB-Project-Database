@@ -24,8 +24,7 @@
                               <br>
                               <input type="password" class="form-control" placeholder="password..." id="password">
                               <br>
-                              <button class="btn btn-primary btn-md" type="button" id="login"
-                                 onclick="login()">Login</button>
+                              <button class="btn btn-primary btn-md" type="button" id="loginbtn">Login</button>
                            </form>
                         </div>
                      </div>
@@ -132,7 +131,7 @@
       //    toastBootstrap.show()
       // })
       // console.log("toast")
-      loginbtn = document.getElementById("login");
+      loginbtn = document.getElementById("loginbtn");
       loginbtn.addEventListener("click", login);
       logoutbtn = document.getElementById("lout");
       logoutbtn.addEventListener("click", logout);

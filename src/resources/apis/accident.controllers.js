@@ -20,7 +20,7 @@ export const getAllAccident = tryCatchWrapper(async function (req, res, next) {
   const [rows] = await pool.query(sql);
   if (!rows.length) return res.status(204).json({ message: "empty list" });
 
-  return res.status(200).json({ data: rows });
+  return res.status(200).json({ data: rows, status: true });
 });
 
 /**
@@ -48,7 +48,7 @@ export const createAccident = tryCatchWrapper(async function (req, res, next) {
   let sql = "INSERT INTO accidentcases ( victim_id, vehicle_id, police_id, witness_id, location, description, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
   await pool.query(sql, [ victim_id, vehicle_id, police_id, witness_id, location, description, status]);
 
-  return res.status(201).json({ message: "Accident has been created" });
+  return res.status(201).json({ message: "Accident has been created", status: true  });
 });
 
 /**
@@ -68,7 +68,7 @@ export const updateAccident = tryCatchWrapper(async function (req, res, next) {
   let sql = "UPDATE accidentcases SET victim_id = ?, vehicle_id = ?, police_id = ?, witness_id = ?, location = ?, description = ?, status = ? WHERE case_id = ?";
   await pool.query(sql, [victim_id, vehicle_id, police_id, witness_id, location, description, status]);
 
-  return res.status(201).json({ message: "Accident has been updated" });
+  return res.status(201).json({ message: "Accident has been updated", status: true  });
 });
 
 /**
@@ -86,5 +86,5 @@ export const deleteAccident = tryCatchWrapper(async function (req, res, next) {
   let sql = "DELETE FROM accidentcases WHERE case_id = ?";
   await pool.query(sql, [id]);
 
-  return res.status(200).json({ message: "Accident has been deleted" });
+  return res.status(200).json({ message: "Accident has been deleted", status: true  });
 });

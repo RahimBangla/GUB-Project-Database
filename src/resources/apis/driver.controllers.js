@@ -20,7 +20,7 @@ export const getAllDrivers = tryCatchWrapper(async function (req, res, next) {
   const [rows] = await pool.query(sql);
   if (!rows.length) return res.status(204).json({ message: "empty list" });
 
-  return res.status(200).json({ data: rows });
+  return res.status(200).json({ data: rows, status: true  });
 });
 
 /**
@@ -47,7 +47,7 @@ export const createDrivers = tryCatchWrapper(async function (req, res, next) {
   let sql = "INSERT INTO drivers (vehicle_id , nid_number, license_number, contact_number, age) VALUES (?, ?, ?, ?, ?)";
   await pool.query(sql, [vehicle_id, nid_number, license_number, contact_number, age]);
 
-  return res.status(201).json({ message: "Drivers has been created" });
+  return res.status(201).json({ message: "Drivers has been created", status: true  });
 });
 
 /**
@@ -67,7 +67,7 @@ export const updateDrivers = tryCatchWrapper(async function (req, res, next) {
   let sql = "UPDATE Drivers SET vehicle_id = ?, nid_number = ?, license_number = ?, contact_number = ?, age = ? WHERE driver_id = ?";
   await pool.query(sql, [vehicle_id, nid_number, license_number, contact_number, age]);
 
-  return res.status(201).json({ message: "Drivers has been updated" });
+  return res.status(201).json({ message: "Drivers has been updated", status: true  });
 });
 
 /**
@@ -85,5 +85,5 @@ export const deleteDrivers = tryCatchWrapper(async function (req, res, next) {
   let sql = "DELETE FROM Drivers WHERE driver_id = ?";
   await pool.query(sql, [id]);
 
-  return res.status(200).json({ message: "Drivers has been deleted" });
+  return res.status(200).json({ message: "Drivers has been deleted", status: true  });
 });

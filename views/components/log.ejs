@@ -1,0 +1,196 @@
+<div class="container-fluid pb-3 pt-2">
+   <div class="d-grid gap-3" style="grid-template-columns: 1fr 2fr;">
+      <div class="bg-body-tertiary border rounded-3">
+         <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+            <div class="py-5">
+               <p class=" fw-bold" id="formType">Create Vehicle</p>
+               <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                  <input type="text" class="form-control" placeholder="vehicle type..." id="vehicle_type">
+                  <br>
+                  <input type="text" class="form-control" placeholder="mechanical_problem..." id="mechanical_problem">
+                  <br>
+                  <input type="text" class="form-control" placeholder="license number..." id="license_number">
+                  <br>
+                  <button class="btn btn-primary btn-md" type="button" id="vehiclebtn">Submit</button>
+               </form>
+            </div>
+         </div>
+      </div>
+      <div class="bg-body-tertiary border rounded-3">
+         <div class="container-fluid py-5">
+            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addModal" id="addVehicle">Add
+               New
+            </button>
+            <table class="table">
+               <thead>
+                  <tr>
+                     <th scope="col">#Vehicle Id</th>
+                     <th scope="col">Vehicle Type</th>
+                     <th scope="col">Mechanicl Problem</th>
+                     <th scope="col">License Number</th>
+                     <th scope="col">Actions</th>
+                  </tr>
+               </thead>
+               <tbody id="vehicleTr">
+
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+</div>
+
+<script>
+
+   //get data array object and show in table  using fetch api
+   const getVehicle = async () => {
+      const response = await fetch('/api/vehicle');
+      const data = await response.json();
+      console.log(data);
+      let html = ``;
+      data.data.forEach(vehicle => {
+         html += `
+            <tr>
+               <th scope="row">${vehicle.vehicle_id}</th>
+               <td>${vehicle.vehicle_type}</td>
+               <td>${vehicle.mechanical_problem}</td>
+               <td>${vehicle.license_number}</td>
+               <td>
+                  <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal" onclick="editVehicle(${vehicle.vehicle_id})">Edit</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteVehicle(${vehicle.vehicle_id})">Delete</button>
+               </td>
+            </tr>
+         `;
+      });
+      vehicleTr.innerHTML = html;
+   }
+   getVehicle();
+
+   //add vehicle
+   const addVehicle = async () => {
+      const vehicle_type = document.getElementById('vehicle_type').value;
+      const mechanical_problem = document.getElementById('mechanical_problem').value;
+      const license_number = document.getElementById('license_number').value;
+      const response = await fetch('/api/vehicle', {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({
+            vehicle_type: vehicle_type,
+            mechanical_problem: mechanical_problem,
+            license_number: license_number
+         })
+      });
+      const data = await response.json();
+      console.log(data);
+      if (data.status === true) {
+         getVehicle();
+         document.getElementById('vehicle_type').value = '';
+         document.getElementById('mechanical_problem').value = '';
+         document.getElementById('license_number').value = '';
+         document.getElementById('tosttittle').innerHTML = 'Success';
+         document.getElementById('tostbody').innerHTML = 'Vehicle added successfully';
+         var toastLiveExample = document.getElementById('liveToast')
+         var toast = new bootstrap.Toast(toastLiveExample)
+         toast.show()
+      } else {
+         document.getElementById('tosttittle').innerHTML = 'Error';
+         document.getElementById('tostbody').innerHTML = 'Vehicle added failed';
+         var toastLiveExample = document.getElementById('liveToast')
+         var toast = new bootstrap.Toast(toastLiveExample)
+         toast.show()
+      }
+   }
+   let vehiclebtn = document.getElementById('vehiclebtn');
+   vehiclebtn.addEventListener('click', addVehicle);
+
+   //delete vehicle
+   const deleteVehicle = async (id) => {
+      const response = await fetch(`/api/vehicle/${id}`, {
+         method: 'DELETE'
+      });
+      const data = await response.json();
+      console.log(data);
+      if (data.status === true) {
+         getVehicle();
+         document.getElementById('tosttittle').innerHTML = 'Success';
+         document.getElementById('tostbody').innerHTML = 'Vehicle deleted successfully';
+         var toastLiveExample = document.getElementById('liveToast')
+         var toast = new bootstrap.Toast(toastLiveExample)
+         toast.show()
+      } else {
+         document.getElementById('tosttittle').innerHTML = 'Error';
+         document.getElementById('tostbody').innerHTML = 'Vehicle deleted failed';
+         var toastLiveExample = document.getElementById('liveToast')
+         var toast = new bootstrap.Toast(toastLiveExample)
+         toast.show()
+      }
+   }
+   //edit vehicle in id formType change for eidt vehicle
+   const editVehicle = async (id) => {
+      document.getElementById('formType').innerHTML = 'Edit Vehicle';
+      const response = await fetch(`/api/vehicle/${id}`);
+      const data = await response.json();
+      console.log(data);
+      document.getElementById('vehicle_type').value = data.vehicle_type;
+      document.getElementById('mechanical_problem').value = data.mechanical_problem;
+      document.getElementById('license_number').value = data.license_number;
+      vehiclebtn.innerHTML = 'Update';
+      vehiclebtn.removeEventListener('click', addVehicle);
+      vehiclebtn.addEventListener('click', () => updateVehicle(id));
+   }
+   //update vehicle
+   const updateVehicle = async (id) => {
+      const vehicle_type = document.getElementById('vehicle_type').value;
+      const mechanical_problem = document.getElementById('mechanical_problem').value;
+      const license_number = document.getElementById('license_number').value;
+      const response = await fetch(`/api/vehicle/${id}`, {
+         method: 'PATCH',
+         headers: {
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({
+            vehicle_type: vehicle_type,
+            mechanical_problem: mechanical_problem,
+            license_number: license_number
+         })
+      });
+      const data = await response.json();
+      console.log(data);
+      if (data.status === true) {
+         getVehicle();
+         document.getElementById('vehicle_type').value = '';
+         document.getElementById('mechanical_problem').value = '';
+         document.getElementById('license_number').value = '';
+         document.getElementById('formType').innerHTML = 'Create Vehicle';
+         vehiclebtn.innerHTML = 'Submit';
+         vehiclebtn.removeEventListener('click', updateVehicle);
+         vehiclebtn.addEventListener('click', addVehicle);
+         document.getElementById('tosttittle').innerHTML = 'Success';
+         document.getElementById('tostbody').innerHTML = 'Vehicle updated successfully';
+         var toastLiveExample = document.getElementById('liveToast')
+         var toast = new bootstrap.Toast(toastLiveExample)
+         toast.show()
+      } else {
+         document.getElementById('tosttittle').innerHTML = 'Error';
+         document.getElementById('tostbody').innerHTML = 'Vehicle updated failed';
+         var toastLiveExample = document.getElementById('liveToast')
+         var toast = new bootstrap.Toast(toastLiveExample)
+         toast.show()
+      }
+   }
+   // add new update when edit vehicle  avalabe in id createVehicle
+   const createVehicle2 = document.getElementById('addVehicle');
+   createVehicle2.addEventListener('click', () => {
+      document.getElementById('vehicle_type').value = '';
+      document.getElementById('mechanical_problem').value = '';
+      document.getElementById('license_number').value = '';
+      document.getElementById('formType').innerHTML = 'Create Vehicle';
+      vehiclebtn.innerHTML = 'Submit';
+      vehiclebtn.removeEventListener('click', updateVehicle);
+      vehiclebtn.addEventListener('click', addVehicle);
+   })
+
+
+</script>

@@ -20,7 +20,7 @@ export const getAllLog = tryCatchWrapper(async function (req, res, next) {
   const [rows] = await pool.query(sql);
   if (!rows.length) return res.status(204).json({ message: "empty list" });
 
-  return res.status(200).json({ data: rows });
+  return res.status(200).json({ data: rows, status: true  });
 });
 
 /**
@@ -47,7 +47,7 @@ export const createLog = tryCatchWrapper(async function (req, res, next) {
   let sql = "INSERT INTO logs ( user_id, case_id) VALUES (?, ?)";
   await pool.query(sql, [ user_id, case_id]);
 
-  return res.status(201).json({ message: "Log has been created" });
+  return res.status(201).json({ message: "Log has been created", status: true  });
 });
 
 /**
@@ -67,7 +67,7 @@ export const updateLog = tryCatchWrapper(async function (req, res, next) {
   let sql = "UPDATE logs SET user_id = ?, case_id = ?  WHERE log_id = ?";
   await pool.query(sql, [user_id, case_id, id]);
 
-  return res.status(201).json({ message: "log has been updated" });
+  return res.status(201).json({ message: "log has been updated", status: true  });
 });
 
 /**
@@ -85,5 +85,5 @@ export const deleteLog = tryCatchWrapper(async function (req, res, next) {
   let sql = "DELETE FROM logs WHERE log_id = ?";
   await pool.query(sql, [id]);
 
-  return res.status(200).json({ message: "log has been deleted" });
+  return res.status(200).json({ message: "log has been deleted", status: true  });
 });

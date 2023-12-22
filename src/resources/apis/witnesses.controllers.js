@@ -18,7 +18,7 @@ async function getWitnesse(id) {
 export const getAllWitnesse = tryCatchWrapper(async function (req, res, next) {
   let sql = "SELECT * from witnesses";
   const [rows] = await pool.query(sql);
-  if (!rows.length) return res.status(204).json({ message: "empty list" });
+  if (!rows.length) return res.status(204).json({ message: "empty list", status: true  });
 
   return res.status(200).json({ data: rows });
 });
@@ -49,7 +49,7 @@ console.log( rows[0].id);
   let sql = "INSERT INTO witnesses (witness_id , name, contact_number, statement) VALUES (?, ?, ?, ?)";
   await pool.query(sql, [rows[0].id+1, name, contact_number, statement]);
 
-  return res.status(201).json({ message: "Witnesse has been created" });
+  return res.status(201).json({ message: "Witnesse has been created", status: true  });
 });
 
 /**
@@ -69,7 +69,7 @@ export const updateWitnesse = tryCatchWrapper(async function (req, res, next) {
   let sql = "UPDATE witnesses SET name = ?, contact_number = ?, statement = ? WHERE witness_id = ?";
   await pool.query(sql, [name, contact_number, statement, id]);
 
-  return res.status(201).json({ message: "witnesses has been updated" });
+  return res.status(201).json({ message: "witnesses has been updated", status: true  });
 });
 
 /**
@@ -87,5 +87,5 @@ export const deleteWitnesse = tryCatchWrapper(async function (req, res, next) {
   let sql = "DELETE FROM witnesses WHERE witness_id = ?";
   await pool.query(sql, [id]);
 
-  return res.status(200).json({ message: "witnesses has been deleted" });
+  return res.status(200).json({ message: "witnesses has been deleted", status: true  });
 });

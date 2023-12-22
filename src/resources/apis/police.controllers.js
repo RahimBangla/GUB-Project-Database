@@ -20,7 +20,7 @@ export const getAllTrafficpolice = tryCatchWrapper(async function (req, res, nex
   const [rows] = await pool.query(sql);
   if (!rows.length) return res.status(204).json({ message: "empty list" });
 
-  return res.status(200).json({ data: rows });
+  return res.status(200).json({ data: rows, status: true  });
 });
 
 /**
@@ -49,7 +49,7 @@ console.log( rows[0].id);
   let sql = "INSERT INTO Trafficpolice (police_id , name, badge_number, contact_number) VALUES (?, ?, ?, ?)";
   await pool.query(sql, [rows[0].id+1, name, badge_number, contact_number]);
 
-  return res.status(201).json({ message: "Traffic Plice has been created" });
+  return res.status(201).json({ message: "Traffic Plice has been created", status: true  });
 });
 
 /**
@@ -69,7 +69,7 @@ export const updateTrafficpolice = tryCatchWrapper(async function (req, res, nex
   let sql = "UPDATE Trafficpolice SET name = ?, badge_number = ?, contact_number = ? WHERE police_id = ?";
   await pool.query(sql, [name, badge_number, contact_number, id]);
 
-  return res.status(201).json({ message: "Traffic Plice has been updated" });
+  return res.status(201).json({ message: "Traffic Plice has been updated", status: true  });
 });
 
 /**
@@ -87,6 +87,6 @@ export const deleteTrafficpolice = tryCatchWrapper(async function (req, res, nex
   let sql = "DELETE FROM Trafficpolice WHERE police_id = ?";
   await pool.query(sql, [id]);
 
-  return res.status(200).json({ message: "note has been deleted" });
+  return res.status(200).json({ message: "note has been deleted", status: true  });
 });
 
