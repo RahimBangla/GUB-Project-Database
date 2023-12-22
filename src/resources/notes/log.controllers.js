@@ -5,8 +5,8 @@ import { tryCatchWrapper } from "../../middlewares/tryCatchWrapper.js";
 /**
  * @returns note object
  */
-async function getVehicle(id) {
-  let sql = "SELECT * FROM Vehicles WHERE vehicle_id = ?";
+async function getLog(id) {
+  let sql = "SELECT * FROM logs WHERE log_id = ?";
   const [rows] = await pool.query(sql, [id]);
   return rows[0];
 }
@@ -15,8 +15,8 @@ async function getVehicle(id) {
  * @description Get All note
  * @route GET /notes
  */
-export const getAllVehicle = tryCatchWrapper(async function (req, res, next) {
-  let sql = "SELECT * from Vehicles";
+export const getAllLog = tryCatchWrapper(async function (req, res, next) {
+  let sql = "SELECT * from logs";
   const [rows] = await pool.query(sql);
   if (!rows.length) return res.status(204).json({ message: "empty list" });
 
@@ -27,10 +27,10 @@ export const getAllVehicle = tryCatchWrapper(async function (req, res, next) {
  * @description Get Single note
  * @route GET /notes/:id
  */
-export const getSingleVehicle = tryCatchWrapper(async function (req, res, next) {
+export const getSingleLog = tryCatchWrapper(async function (req, res, next) {
   const { id } = req.params;
 
-  const note = await getVehicle(id);
+  const note = await getLog(id);
   if (!note) return next(createCustomError("note not found", 404));
 
   return res.status(200).json(note);
@@ -40,52 +40,50 @@ export const getSingleVehicle = tryCatchWrapper(async function (req, res, next) 
  * @description Create note
  * @route POST /notes
  */
-export const createVehicle = tryCatchWrapper(async function (req, res, next) {
-  const { vehicle_type, mechanical_problem, license_number } = req.body;
-  if (!vehicle_type || !mechanical_problem || !license_number)
+export const createLog = tryCatchWrapper(async function (req, res, next) {
+  const { user_id, case_id } = req.body;
+  if (!user_id || !case_id)
   return next(createCustomError("All fields are required", 400));
-const [rows] = await pool.query("SELECT MAX(vehicle_id) AS id FROM vehicles");
-console.log( rows[0].id);
-  let sql = "INSERT INTO vehicles (vehicle_id , vehicle_type, mechanical_problem, license_number) VALUES (?, ?, ?, ?)";
-  await pool.query(sql, [rows[0].id+1, vehicle_type, mechanical_problem, license_number]);
+  let sql = "INSERT INTO logs ( user_id, case_id) VALUES (?, ?)";
+  await pool.query(sql, [ user_id, case_id]);
 
-  return res.status(201).json({ message: "Vehicle has been created" });
+  return res.status(201).json({ message: "Log has been created" });
 });
 
 /**
  * @description Update note
  * @route PATCH /notes/:id
  */
-export const updateVehicle = tryCatchWrapper(async function (req, res, next) {
+export const updateLog = tryCatchWrapper(async function (req, res, next) {
   const { id } = req.params;
-  const { vehicle_type, mechanical_problem, license_number  } = req.body;
+  const { user_id, case_id  } = req.body;
 
-  if (!id || !vehicle_type || !mechanical_problem || !license_number)
+  if (!id || !user_id || !case_id)
     return next(createCustomError("All fields are required", 400));
 
-  const note = await getVehicle(id);
+  const note = await getLog(id);
   if (!note) return next(createCustomError("note not found", 404));
 
-  let sql = "UPDATE vehicle SET vehicle_type = ?, mechanical_problem = ?, license_number = ? WHERE vehicle_id = ?";
-  await pool.query(sql, [vehicle_type, mechanical_problem, license_number, id]);
+  let sql = "UPDATE logs SET user_id = ?, case_id = ?  WHERE log_id = ?";
+  await pool.query(sql, [user_id, case_id, id]);
 
-  return res.status(201).json({ message: "note has been updated" });
+  return res.status(201).json({ message: "log has been updated" });
 });
 
 /**
  * @description Delete note
  * @route DELETE /notes/:id
  */
-export const deleteVehicle = tryCatchWrapper(async function (req, res, next) {
+export const deleteLog = tryCatchWrapper(async function (req, res, next) {
   const { id } = req.params;
 
   if (!id) return next(createCustomError("Id is required", 400));
 
-  const note = await getVehicle(id);
+  const note = await getLog(id);
   if (!note) return next(createCustomError("note not found", 404));
 
-  let sql = "DELETE FROM vehicle WHERE vehicle_id = ?";
+  let sql = "DELETE FROM logs WHERE log_id = ?";
   await pool.query(sql, [id]);
 
-  return res.status(200).json({ message: "note has been deleted" });
+  return res.status(200).json({ message: "log has been deleted" });
 });

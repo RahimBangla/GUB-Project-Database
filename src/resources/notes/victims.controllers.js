@@ -41,13 +41,13 @@ export const getSingleVictim = tryCatchWrapper(async function (req, res, next) {
  * @route POST /notes
  */
 export const createVictim = tryCatchWrapper(async function (req, res, next) {
-  const { Victim_type, mechanical_problem, license_number } = req.body;
-  if (!Victim_type || !mechanical_problem || !license_number)
+  const { name,age,  gender, injury_type } = req.body;
+  if (!name || !age || !gender || !injury_type)
   return next(createCustomError("All fields are required", 400));
 const [rows] = await pool.query("SELECT MAX(victim_id) AS id FROM victims");
 console.log( rows[0].id);
-  let sql = "INSERT INTO victims (victim_id , Victim_type, mechanical_problem, license_number) VALUES (?, ?, ?, ?)";
-  await pool.query(sql, [rows[0].id+1, Victim_type, mechanical_problem, license_number]);
+  let sql = "INSERT INTO victims (victim_id , name, age, gender, injury_type) VALUES (?, ?, ?, ?)";
+  await pool.query(sql, [rows[0].id+1, name, age, gender, injury_type]);
 
   return res.status(201).json({ message: "Victim has been created" });
 });
@@ -58,18 +58,18 @@ console.log( rows[0].id);
  */
 export const updateVictim = tryCatchWrapper(async function (req, res, next) {
   const { id } = req.params;
-  const { Victim_type, mechanical_problem, license_number  } = req.body;
+  const { name,age,  gender, injury_type  } = req.body;
 
-  if (!id || !Victim_type || !mechanical_problem || !license_number)
+  if (!id ||!name || !age || !gender || !injury_type)
     return next(createCustomError("All fields are required", 400));
 
   const note = await getVictim(id);
   if (!note) return next(createCustomError("note not found", 404));
 
-  let sql = "UPDATE victims SET Victim_type = ?, mechanical_problem = ?, license_number = ? WHERE victim_id = ?";
-  await pool.query(sql, [Victim_type, mechanical_problem, license_number, id]);
+  let sql = "UPDATE victims SET name = ?, age = ?, gender = ?, injury_type = ? WHERE victim_id = ?";
+  await pool.query(sql, [name,age,  gender, injury_type, id]);
 
-  return res.status(201).json({ message: "note has been updated" });
+  return res.status(201).json({ message: "Victim has been updated" });
 });
 
 /**
@@ -87,5 +87,5 @@ export const deleteVictim = tryCatchWrapper(async function (req, res, next) {
   let sql = "DELETE FROM victims WHERE victim_id = ?";
   await pool.query(sql, [id]);
 
-  return res.status(200).json({ message: "note has been deleted" });
+  return res.status(200).json({ message: "Victim has been deleted" });
 });
