@@ -3,38 +3,41 @@
       <div class="bg-body-tertiary border rounded-3">
          <div class="p-5 mb-4 bg-body-tertiary rounded-3">
             <div class="py-5">
-               <p class=" fw-bold" id="formTypeVictim">Create victim</p>
+               <p class=" fw-bold" id="formTypeDriver">Create Driver</p>
                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                  <input type="text" class="form-control" placeholder="victim Name" id="nameVictim">
+                  <input type="text" class="form-control" placeholder="Driver Name" id="nameDriver">
                   <br>
-                  <input type="text" class="form-control" placeholder="age" id="ageVictim">
+                  <input type="text" class="form-control" placeholder="age" id="ageDriver">
                   <br>
-                  <input type="text" class="form-control" placeholder="genderVictim" id="genderVictim">
+                  <input type="text" class="form-control" placeholder="genderDriver" id="genderDriver">
                   <br>
                   <input type="text" class="form-control" placeholder="injury_type" id="injury_type">
                   <br>
-                  <button class="btn btn-primary btn-md" type="button" id="victimbtn">Submit</button>
+                  <input type="text" class="form-control" placeholder="injury_type" id="injury_type">
+                  <br>
+                  <button class="btn btn-primary btn-md" type="button" id="Driverbtn">Submit</button>
                </form>
             </div>
          </div>
       </div>
       <div class="bg-body-tertiary border rounded-3">
          <div class="container-fluid py-5">
-            <button class="btn btn-success mb-3" id="addvictim">Add
+            <button class="btn btn-success mb-3" id="addDriver">Add
                New
             </button>
             <table class="table">
                <thead>
                   <tr>
-                     <th scope="col">#victim Id</th>
-                     <th scope="col">name</th>
+                     <th scope="col">#Driver Id</th>
+                     <th scope="col">vehicle_id</th>
+                     <th scope="col">nid_number</th>
+                     <th scope="col">license_number</th>
+                     <th scope="col">contact_number</th>
                      <th scope="col">age</th>
-                     <th scope="col">gender</th>
-                     <th scope="col">injury_type</th>
                      <th scope="col">Actions</th>
                   </tr>
                </thead>
-               <tbody id="victimTr">
+               <tbody id="DriverTr">
 
                </tbody>
             </table>
@@ -46,38 +49,39 @@
 <script>
 
    //get data array object and show in table  using fetch api
-   const getvictim = async () => {
-      const response = await fetch('/api/victims');
+   const getDriver = async () => {
+      const response = await fetch('/api/Drivers');
       const data = await response.json();
       console.log(data);
       let html = ``;
-      data.data.forEach(victim => {
+      data.data.forEach(Driver => {
          html += `
             <tr>
-               <th scope="row">${victim.victim_id}</th>
-               <td>${victim.name}</td>
-               <td>${victim.age}</td>
-               <td>${victim.gender}</td>
-               <td>${victim.injury_type}</td>
+               <th scope="row">${Driver.driver_id}</th>
+               <td>${Driver.vehicle_id}</td>
+               <td>${Driver.nid_number}</td>
+               <td>${Driver.license_number}</td>
+               <td>${Driver.contact_number}</td>
+               <td>${Driver.age}</td>
                <td>
-                  <button class="btn btn-warning btn-sm"  onclick="editvictim(${victim.victim_id})">Edit</button>
-                  <button class="btn btn-danger btn-sm" onclick="deletevictim(${victim.victim_id})">Delete</button>
+                  <button class="btn btn-warning btn-sm"  onclick="editDriver(${Driver.driver_id})">Edit</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteDriver(${Driver.driver_id})">Delete</button>
                </td>
             </tr>
          `;
       });
-      victimTr.innerHTML = html;
+      DriverTr.innerHTML = html;
    }
-   getvictim();
+   getDriver();
 
-   //add victim
-   const addvictim = async () => {
-      const name = document.getElementById('nameVictim').value;
-      const age = document.getElementById('ageVictim').value;
-      const gender = document.getElementById('genderVictim').value;
+   //add Driver
+   const addDriver = async () => {
+      const name = document.getElementById('nameDriver').value;
+      const age = document.getElementById('ageDriver').value;
+      const gender = document.getElementById('genderDriver').value;
       const injury_type = document.getElementById('injury_type').value;
 
-      const response = await fetch('/api/victims', {
+      const response = await fetch('/api/Drivers', {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json'
@@ -92,73 +96,73 @@
       const data = await response.json();
       console.log(data);
       if (data.status === true) {
-         getvictim();
-         document.getElementById('nameVictim').value = '';
-         document.getElementById('ageVictim').value = '';
-         document.getElementById('genderVictim').value = '';
+         getDriver();
+         document.getElementById('nameDriver').value = '';
+         document.getElementById('ageDriver').value = '';
+         document.getElementById('genderDriver').value = '';
          document.getElementById('injury_type').value = '';
 
          document.getElementById('tosttittle').innerHTML = 'Success';
-         document.getElementById('tostbody').innerHTML = 'victim added successfully';
+         document.getElementById('tostbody').innerHTML = 'Driver added successfully';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       } else {
          document.getElementById('tosttittle').innerHTML = 'Error';
-         document.getElementById('tostbody').innerHTML = 'victim added failed';
+         document.getElementById('tostbody').innerHTML = 'Driver added failed';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       }
    }
-   let victimbtn = document.getElementById('victimbtn');
-   victimbtn.addEventListener('click', addvictim);
+   let Driverbtn = document.getElementById('Driverbtn');
+   Driverbtn.addEventListener('click', addDriver);
 
-   //delete victim
-   const deletevictim = async (id) => {
-      const response = await fetch(`/api/victims/${id}`, {
+   //delete Driver
+   const deleteDriver = async (id) => {
+      const response = await fetch(`/api/Drivers/${id}`, {
          method: 'DELETE'
       });
       const data = await response.json();
       console.log(data);
       if (data.status === true) {
-         getvictim();
+         getDriver();
          document.getElementById('tosttittle').innerHTML = 'Success';
-         document.getElementById('tostbody').innerHTML = 'victim deleted successfully';
+         document.getElementById('tostbody').innerHTML = 'Driver deleted successfully';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       } else {
          document.getElementById('tosttittle').innerHTML = 'Error';
-         document.getElementById('tostbody').innerHTML = 'victim deleted failed';
+         document.getElementById('tostbody').innerHTML = 'Driver deleted failed';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       }
    }
-   //edit victim in id formType change for eidt victim
-   const editvictim = async (id) => {
-      document.getElementById('formTypeVictim').innerHTML = 'Edit victim';
-      const response = await fetch(`/api/victims/${id}`);
+   //edit Driver in id formType change for eidt Driver
+   const editDriver = async (id) => {
+      document.getElementById('formTypeDriver').innerHTML = 'Edit Driver';
+      const response = await fetch(`/api/Drivers/${id}`);
       const data = await response.json();
       console.log(data);
-      document.getElementById('nameVictim').value = data.name;
-      document.getElementById('ageVictim').value = data.age;
-      document.getElementById('genderVictim').value = data.gender;
+      document.getElementById('nameDriver').value = data.name;
+      document.getElementById('ageDriver').value = data.age;
+      document.getElementById('genderDriver').value = data.gender;
       document.getElementById('injury_type').value = data.injury_type;
 
-      victimbtn.innerHTML = 'Update';
-      victimbtn.removeEventListener('click', addvictim);
-      victimbtn.addEventListener('click', () => updatevictim(id));
+      Driverbtn.innerHTML = 'Update';
+      Driverbtn.removeEventListener('click', addDriver);
+      Driverbtn.addEventListener('click', () => updateDriver(id));
    }
 
-   //update victim
-   const updatevictim = async (id) => {
-      const name = document.getElementById('nameVictim').value;
-      const age = document.getElementById('ageVictim').value;
-      const gender = document.getElementById('genderVictim').value;
+   //update Driver
+   const updateDriver = async (id) => {
+      const name = document.getElementById('nameDriver').value;
+      const age = document.getElementById('ageDriver').value;
+      const gender = document.getElementById('genderDriver').value;
       const injury_type = document.getElementById('injury_type').value;
-      const response = await fetch(`/api/victims/${id}`, {
+      const response = await fetch(`/api/Drivers/${id}`, {
          method: 'PATCH',
          headers: {
             'Content-Type': 'application/json'
@@ -173,39 +177,39 @@
       const data = await response.json();
       console.log(data);
       if (data.status === true) {
-         getvictim();
-         document.getElementById('nameVictim').value = '';
-         document.getElementById('ageVictim').value = '';
-         document.getElementById('genderVictim').value = '';
+         getDriver();
+         document.getElementById('nameDriver').value = '';
+         document.getElementById('ageDriver').value = '';
+         document.getElementById('genderDriver').value = '';
          document.getElementById('injury_type').value = '';
-         document.getElementById('formTypeVictim').innerHTML = 'Create victim';
-         victimbtn.innerHTML = 'Submit';
-         victimbtn.removeEventListener('click', updatevictim);
-         victimbtn.addEventListener('click', addvictim);
+         document.getElementById('formTypeDriver').innerHTML = 'Create Driver';
+         Driverbtn.innerHTML = 'Submit';
+         Driverbtn.removeEventListener('click', updateDriver);
+         Driverbtn.addEventListener('click', addDriver);
          document.getElementById('tosttittle').innerHTML = 'Success';
-         document.getElementById('tostbody').innerHTML = 'victim updated successfully';
+         document.getElementById('tostbody').innerHTML = 'Driver updated successfully';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       } else {
          document.getElementById('tosttittle').innerHTML = 'Error';
-         document.getElementById('tostbody').innerHTML = 'victim updated failed';
+         document.getElementById('tostbody').innerHTML = 'Driver updated failed';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       }
    }
-   // add new update when edit victim  avalabe in id createvictim
-   const createvictim2 = document.getElementById('addvictim');
-   createvictim2.addEventListener('click', () => {
-      document.getElementById('nameVictim').value = '';
-      document.getElementById('ageVictim').value = '';
-      document.getElementById('genderVictim').value = '';
+   // add new update when edit Driver  avalabe in id createDriver
+   const createDriver2 = document.getElementById('addDriver');
+   createDriver2.addEventListener('click', () => {
+      document.getElementById('nameDriver').value = '';
+      document.getElementById('ageDriver').value = '';
+      document.getElementById('genderDriver').value = '';
       document.getElementById('injury_type').value = '';
-      document.getElementById('formTypeVictim').innerHTML = 'Create victim';
-      victimbtn.innerHTML = 'Submit';
-      victimbtn.removeEventListener('click', updatevictim);
-      victimbtn.addEventListener('click', addvictim);
+      document.getElementById('formTypeDriver').innerHTML = 'Create Driver';
+      Driverbtn.innerHTML = 'Submit';
+      Driverbtn.removeEventListener('click', updateDriver);
+      Driverbtn.addEventListener('click', addDriver);
    })
 
 
