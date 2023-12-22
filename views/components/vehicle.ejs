@@ -24,14 +24,15 @@
             <table class="table">
                <thead>
                   <tr>
-                     <th scope="col">#</th>
-                     <th scope="col">First</th>
-                     <th scope="col">Last</th>
-                     <th scope="col">Handle</th>
+                     <th scope="col">#Vehicle Id</th>
+                     <th scope="col">Vehicle Type</th>
+                     <th scope="col">Mechanicl Problem</th>
+                     <th scope="col">License Number</th>
+                     <th scope="col">Actions</th>
                   </tr>
                </thead>
-               <tbody>
-                  <tr>
+               <tbody id="vehicleTr">
+                  <!-- <tr>
                      <th scope="row">1</th>
                      <td>Mark</td>
                      <td>Otto</td>
@@ -47,10 +48,38 @@
                      <th scope="row">3</th>
                      <td colspan="2">Larry the Bird</td>
                      <td>@twitter</td>
-                  </tr>
+                  </tr> -->
                </tbody>
             </table>
          </div>
       </div>
    </div>
 </div>
+
+<script>
+
+   //get data array object and show in table  using fetch api
+   const getVehicle = async () => {
+      const response = await fetch('/api/vehicle');
+      const data = await response.json();
+      console.log(data);
+      let html = '';
+      data.forEach(vehicle => {
+         html += `
+            <tr>
+               <th scope="row">${vehicle.vehicle_id}</th>
+               <td>${vehicle.vehicle_type}</td>
+               <td>${vehicle.mechanical_problem}</td>
+               <td>${vehicle.license_number}</td>
+               <td>
+                  <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal" onclick="editVehicle(${vehicle.vehicle_id})">Edit</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteVehicle(${vehicle.vehicle_id})">Delete</button>
+               </td>
+            </tr>
+         `;
+      });
+      vehicleTr.innerHTML = html;
+   }
+   getVehicle();
+
+</script>

@@ -20,7 +20,7 @@ export const getAllWitnesse = tryCatchWrapper(async function (req, res, next) {
   const [rows] = await pool.query(sql);
   if (!rows.length) return res.status(204).json({ message: "empty list" });
 
-  return res.status(200).json({ notes: rows });
+  return res.status(200).json({ data: rows });
 });
 
 /**
