@@ -13,18 +13,19 @@
          <%- include('../partials/header'); %>
 
 
-            <div class="container-fluid pb-3">
+            <div class="container-fluid pb-3 pt-2" id="notlogged">
                <div class="d-grid gap-3" style="grid-template-columns: 1fr 2fr;">
                   <div class="bg-body-tertiary border rounded-3">
                      <div class="p-5 mb-4 bg-body-tertiary rounded-3">
                         <div class="py-5">
                            <p class=" fw-bold">Login</p>
-                           <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                           <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                               <input type="text" class="form-control" placeholder="username..." id="username">
                               <br>
                               <input type="password" class="form-control" placeholder="password..." id="password">
                               <br>
-                              <button class="btn btn-primary btn-md" type="button">Login</button>
+                              <button class="btn btn-primary btn-md" type="button" id="login"
+                                 onclick="login()">Login</button>
                            </form>
                         </div>
                      </div>
@@ -32,103 +33,51 @@
                   <div class="bg-body-tertiary border rounded-3">
                      <div class="container-fluid py-5">
                         <p class=" fw-bold">Sign-up</p>
-                        <form class="col-12 gap-3 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                        <form class="col-12 gap-3 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                            <input type="text" class="form-control" placeholder="FullName..." id="fullname">
                            <br>
                            <input type="text" class="form-control" placeholder="username..." id="username1">
                            <br>
                            <input type="password" class="form-control" placeholder="password..." id="password1">
                            <br>
-                           <button class="btn btn-outline-secondary btn-md" type="button">Sign-up</button>
+                           <button class="btn btn-outline-secondary btn-md" type="button" id="signup">Sign-up</button>
                         </form>
                      </div>
                   </div>
                </div>
             </div>
 
+            <div id="logged" hidden>
+               <%- include('../components/vehicle'); %>
 
 
-            <div class="container-fluid pb-3">
-               <div class="d-grid gap-3" style="grid-template-columns: 1fr 2fr;">
-                  <div class="bg-body-tertiary border rounded-3">
-                     <div class="p-5 mb-4 bg-body-tertiary rounded-3">
-                        <div class="py-5">
-                           <p class=" fw-bold">Create Vehicle</p>
-                           <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                              <input type="text" class="form-control" placeholder="vehicle type..." id="vehicle_type">
-                              <br>
-                              <input type="text" class="form-control" placeholder="mechanical_problem..."
-                                 id="mechanical_problem">
-                              <br>
-                              <input type="text" class="form-control" placeholder="license number..."
-                                 id="license_number">
-                              <br>
-                              <button class="btn btn-primary btn-md" type="button">Submit</button>
-                           </form>
+                  <div class="row align-items-md-stretch">
+                     <div class="col-md-6">
+                        <div class="h-100 p-5 text-bg-dark rounded-3">
+                           <h2>Change the background</h2>
+                           <p>Swap the background-color utility and add a `.text-*` color utility to mix up the
+                              jumbotron
+                              look.
+                              Then, mix and match with additional component themes and more.</p>
+                           <button class="btn btn-outline-light" type="button">Example button</button>
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                           <h2>Add borders</h2>
+                           <p>Or, keep it light and add a border for some added definition to the boundaries of your
+                              content.
+                              Be
+                              sure to look under the hood at the source HTML here as we've adjusted the alignment and
+                              sizing
+                              of
+                              both column's content for equal-height.</p>
+                           <button class="btn btn-outline-secondary" type="button">Example button</button>
                         </div>
                      </div>
                   </div>
-                  <div class="bg-body-tertiary border rounded-3">
-                     <div class="container-fluid py-5">
-                        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addModal">Add New
-                        </button>
-                        <table class="table">
-                           <thead>
-                              <tr>
-                                 <th scope="col">#</th>
-                                 <th scope="col">First</th>
-                                 <th scope="col">Last</th>
-                                 <th scope="col">Handle</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                              <tr>
-                                 <th scope="row">1</th>
-                                 <td>Mark</td>
-                                 <td>Otto</td>
-                                 <td>@mdo</td>
-                              </tr>
-                              <tr>
-                                 <th scope="row">2</th>
-                                 <td>Jacob</td>
-                                 <td>Thornton</td>
-                                 <td>@fat</td>
-                              </tr>
-                              <tr>
-                                 <th scope="row">3</th>
-                                 <td colspan="2">Larry the Bird</td>
-                                 <td>@twitter</td>
-                              </tr>
-                           </tbody>
-                        </table>
-                     </div>
-                  </div>
-               </div>
             </div>
 
-
-            <div class="row align-items-md-stretch">
-               <div class="col-md-6">
-                  <div class="h-100 p-5 text-bg-dark rounded-3">
-                     <h2>Change the background</h2>
-                     <p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron
-                        look.
-                        Then, mix and match with additional component themes and more.</p>
-                     <button class="btn btn-outline-light" type="button">Example button</button>
-                  </div>
-               </div>
-               <div class="col-md-6">
-                  <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                     <h2>Add borders</h2>
-                     <p>Or, keep it light and add a border for some added definition to the boundaries of your content.
-                        Be
-                        sure to look under the hood at the source HTML here as we've adjusted the alignment and sizing
-                        of
-                        both column's content for equal-height.</p>
-                     <button class="btn btn-outline-secondary" type="button">Example button</button>
-                  </div>
-               </div>
-            </div>
 
             <footer class="pt-3 mt-4 text-body-secondary border-top">
                <%- include('../partials/footer'); %>
@@ -137,8 +86,200 @@
    </main>
 
    <script>
+      try {
+         if (localStorage.getItem("status") == "true") {
+            document.getElementById("logged").hidden = false;
+            document.getElementById("notlogged").hidden = true;
+            document.getElementById("lout").hidden = false;
+            document.getElementById("lin").hidden = true;
+            document.getElementById("fullNameT").innerHTML = JSON.parse(localStorage.getItem("username")).data.fullName;
+            document.getElementById("fullNameT").hidden = false;
+         } else {
+            document.getElementById("logged").hidden = true;
+            document.getElementById("notlogged").hidden = false;
+            document.getElementById("lout").hidden = true;
+            document.getElementById("lin").hidden = false;
+            document.getElementById("fullNameT").hidden = true;
+         }
+      }
+      catch (err) {
+         console.log(err);
+      }
       // api post request for crate vehicle 
+      const createVehicle = async (vehicle_type, mechanical_problem, license_number) => {
+         const response = await fetch('/api/vehicles', {
+            method: 'POST',
+            body: JSON.stringify({
+               vehicle_type,
+               mechanical_problem,
+               license_number
+            }),
+            headers: {
+               'Content-Type': 'application/json'
+            }
+         });
+         if (response.ok) {
+            document.location.replace('/');
+         } else {
+            alert(response.statusText);
+         }
+      };
+      //       const toastLive = document.getElementById('liveToast')
 
+
+      // const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive)
+      // toastTrigger.addEventListener('click', () => {
+      //    toastBootstrap.show()
+      // })
+      // console.log("toast")
+      loginbtn = document.getElementById("login");
+      loginbtn.addEventListener("click", login);
+      logoutbtn = document.getElementById("lout");
+      logoutbtn.addEventListener("click", logout);
+      function logout() {
+         localStorage.setItem("status", false);
+         localStorage.setItem("username", "");
+         document.getElementById("logged").hidden = true;
+         document.getElementById("notlogged").hidden = false;
+         document.getElementById("lout").hidden = true;
+         document.getElementById("lin").hidden = false;
+         document.getElementById("tosttittle").innerHTML = "Success";
+         document.getElementById("tostbody").innerHTML = "Logout Successful";
+         var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+         var toastList = toastElList.map(function (toastEl) {
+            return new bootstrap.Toast(toastEl)
+         });
+         toastList.forEach(toast => toast.show());
+      }
+
+      function login() {
+         var username = document.getElementById("username").value;
+         var password = document.getElementById("password").value;
+         if (username && password) {
+            //login api call post request api/login
+            fetch('/api/login', {
+               method: 'POST',
+               body: JSON.stringify({
+                  username,
+                  password
+               }),
+               headers: {
+                  'Content-Type': 'application/json'
+               }
+            }).then(response => response.json())
+               .then(data => {
+                  console.log(data);
+                  if (data.status == true) {
+                     localStorage.setItem("status", data.status);
+                     localStorage.setItem("username", JSON.stringify(data));
+                     document.getElementById("logged").hidden = false;
+                     document.getElementById("notlogged").hidden = true;
+                     document.getElementById("lout").hidden = false;
+                     document.getElementById("lin").hidden = true;
+                     document.getElementById("username").value = "";
+                     document.getElementById("password").value = "";
+                     document.getElementById("tosttittle").innerHTML = "Success";
+                     document.getElementById("tostbody").innerHTML = data.message;
+                     var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+                     var toastList = toastElList.map(function (toastEl) {
+                        return new bootstrap.Toast(toastEl)
+                     });
+                     toastList.forEach(toast => toast.show());
+                  } else {
+                     document.getElementById("tosttittle").innerHTML = "Error";
+                     document.getElementById("tostbody").innerHTML = "Login Failed!";
+                     document.getElementById("lout").hidden = true;
+                     document.getElementById("lin").hidden = false;
+                     var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+                     var toastList = toastElList.map(function (toastEl) {
+                        return new bootstrap.Toast(toastEl)
+                     });
+                     toastList.forEach(toast => toast.show());
+                  }
+               }).catch((error) => {
+                  console.error('Error:', error);
+                  document.getElementById("tosttittle").innerHTML = "Error";
+                  document.getElementById("tostbody").innerHTML = "Login Failed!";
+                  var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+                  var toastList = toastElList.map(function (toastEl) {
+                     return new bootstrap.Toast(toastEl)
+                  });
+                  toastList.forEach(toast => toast.show());
+               })
+
+
+         } else {
+            document.getElementById("tosttittle").innerHTML = "Error";
+            document.getElementById("tostbody").innerHTML = "username or password is empty";
+            var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+            var toastList = toastElList.map(function (toastEl) {
+               return new bootstrap.Toast(toastEl)
+            });
+            toastList.forEach(toast => toast.show());
+         }
+      }
+      var signupbtn = document.getElementById("signup");
+      signupbtn.addEventListener("click", signup);
+      // signup api call post request api/signup
+      function signup() {
+         var fullName = document.getElementById("fullname").value;
+         var username = document.getElementById("username1").value;
+         var password = document.getElementById("password1").value;
+         if (fullname && username && password) {
+            fetch('/api/singup', {
+               method: 'POST',
+               body: JSON.stringify({
+                  fullName,
+                  username,
+                  password
+               }),
+               headers: {
+                  'Content-Type': 'application/json'
+               }
+            }).then(response => response.json())
+               .then((data) => {
+                  console.log(data);
+                  console.log(status);
+                  if (data.status == true) {
+                     document.getElementById("fullname").value = "";
+                     document.getElementById("username1").value = "";
+                     document.getElementById("password1").value = "";
+                     document.getElementById("tosttittle").innerHTML = "Success";
+                     document.getElementById("tostbody").innerHTML = data.message;
+                     var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+                     var toastList = toastElList.map(function (toastEl) {
+                        return new bootstrap.Toast(toastEl)
+                     });
+                     toastList.forEach(toast => toast.show());
+                  } else {
+                     document.getElementById("tosttittle").innerHTML = "Error";
+                     document.getElementById("tostbody").innerHTML = data.message;
+                     var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+                     var toastList = toastElList.map(function (toastEl) {
+                        return new bootstrap.Toast(toastEl)
+                     });
+                     toastList.forEach(toast => toast.show());
+                  }
+               }).catch((error) => {
+                  console.error('Error:', error);
+                  document.getElementById("tosttittle").innerHTML = "Error";
+                  document.getElementById("tostbody").innerHTML = "Signup Failed!";
+                  var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+                  var toastList = toastElList.map(function (toastEl) {
+                     return new bootstrap.Toast(toastEl)
+                  });
+                  toastList.forEach(toast => toast.show());
+               })
+         } else {
+            document.getElementById("tosttittle").innerHTML = "Error";
+            document.getElementById("tostbody").innerHTML = "username or password is empty";
+            var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+            var toastList = toastElList.map(function (toastEl) {
+               return new bootstrap.Toast(toastEl)
+            });
+            toastList.forEach(toast => toast.show());
+         }
+      }
    </script>
 
 

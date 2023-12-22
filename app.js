@@ -3,7 +3,7 @@ import express from "express";
 import path from "path";
 import { handleError } from "./src/middlewares/handleError.js";
 import { notFound } from "./src/middlewares/notFound.js";
-import notesRoute from "./src/resources/notes/notes.routes.js";
+import ApiRoute from "./src/resources/apis/api.routes.js";
 
 dotenv.config();
 
@@ -38,7 +38,7 @@ app.get("/ok", (req, res) => {
   res.send("<html> <head>server Response</head><body><h1> This page was render direcly from the server <p>Hello there welcome to my website</p></h1></body></html>");
 });
 // api routes
-app.use("/api", notesRoute);
+app.use("/api", ApiRoute);
 // Define the directory where your static files (including HTML) are located
 app.use(express.static('public'))
 app.use(notFound);

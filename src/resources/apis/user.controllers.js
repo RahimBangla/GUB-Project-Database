@@ -67,7 +67,7 @@ export const SingUp = tryCatchWrapper(async function (req, res, next) {
     await pool.query(sql, [fullName, username, password]);
   
 
-  return res.status(201).json({ message: "Registration Successfull!" });
+  return res.status(201).json({ message: "Registration Successfull!", status: true });
 });
 /**
  * @description Update note
