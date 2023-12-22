@@ -3,38 +3,35 @@
       <div class="bg-body-tertiary border rounded-3">
          <div class="p-5 mb-4 bg-body-tertiary rounded-3">
             <div class="py-5">
-               <p class=" fw-bold" id="formTypeVictim">Create victim</p>
+               <p class=" fw-bold" id="formTypeWitness">Create Witness</p>
                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                  <input type="text" class="form-control" placeholder="victim Name" id="nameVictim">
+                  <input type="text" class="form-control" placeholder="Witness Name" id="nameWitness">
                   <br>
-                  <input type="text" class="form-control" placeholder="age" id="ageVictim">
+                  <input type="text" class="form-control" placeholder="contact_number" id="contact_number">
                   <br>
-                  <input type="text" class="form-control" placeholder="genderVictim" id="genderVictim">
+                  <input type="text" class="form-control" placeholder="statement" id="statement">
                   <br>
-                  <input type="text" class="form-control" placeholder="injury_type" id="injury_type">
-                  <br>
-                  <button class="btn btn-primary btn-md" type="button" id="victimbtn">Submit</button>
+                  <button class="btn btn-primary btn-md" type="button" id="Witnessbtn">Submit</button>
                </form>
             </div>
          </div>
       </div>
       <div class="bg-body-tertiary border rounded-3">
          <div class="container-fluid py-5">
-            <button class="btn btn-success mb-3" id="addvictim">Add
+            <button class="btn btn-success mb-3" id="addWitness">Add
                New
             </button>
             <table class="table">
                <thead>
                   <tr>
-                     <th scope="col">#victim Id</th>
+                     <th scope="col">#Witness Id</th>
                      <th scope="col">name</th>
-                     <th scope="col">age</th>
-                     <th scope="col">gender</th>
-                     <th scope="col">injury_type</th>
+                     <th scope="col">contact_number</th>
+                     <th scope="col">statement</th>
                      <th scope="col">Actions</th>
                   </tr>
                </thead>
-               <tbody id="victimTr">
+               <tbody id="WitnessTr">
 
                </tbody>
             </table>
@@ -46,166 +43,160 @@
 <script>
 
    //get data array object and show in table  using fetch api
-   const getvictim = async () => {
-      const response = await fetch('/api/victims');
+   const getWitness = async () => {
+      const response = await fetch('/api/witness');
       const data = await response.json();
       console.log(data);
       let html = ``;
-      data.data.forEach(victim => {
+      data.data.forEach(Witness => {
          html += `
             <tr>
-               <th scope="row">${victim.victim_id}</th>
-               <td>${victim.name}</td>
-               <td>${victim.age}</td>
-               <td>${victim.gender}</td>
-               <td>${victim.injury_type}</td>
+               <th scope="row">${Witness.witness_id}</th>
+               <td>${Witness.name}</td>
+               <td>${Witness.contact_number}</td>
+               <td>${Witness.statement}</td>
                <td>
-                  <button class="btn btn-warning btn-sm"  onclick="editvictim(${victim.victim_id})">Edit</button>
-                  <button class="btn btn-danger btn-sm" onclick="deletevictim(${victim.victim_id})">Delete</button>
+                  <button class="btn btn-warning btn-sm"  onclick="editWitness(${Witness.witness_id})">Edit</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteWitness(${Witness.witness_id})">Delete</button>
                </td>
             </tr>
          `;
       });
-      victimTr.innerHTML = html;
+      WitnessTr.innerHTML = html;
    }
-   getvictim();
+   getWitness();
 
-   //add victim
-   const addvictim = async () => {
-      const name = document.getElementById('nameVictim').value;
-      const age = document.getElementById('ageVictim').value;
-      const gender = document.getElementById('genderVictim').value;
-      const injury_type = document.getElementById('injury_type').value;
+   //add Witness
+   const addWitness = async () => {
 
-      const response = await fetch('/api/victims', {
+      const name = document.getElementById('nameWitness').value;
+      const contact_number = document.getElementById('contact_number').value;
+      const statement = document.getElementById('statement').value;
+
+
+      const response = await fetch('/api/witness', {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({
             name: name,
-            age: age,
-            gender: gender,
-            injury_type: injury_type
+            contact_number: contact_number,
+            statement: statement
+
          })
       });
       const data = await response.json();
       console.log(data);
       if (data.status === true) {
-         getvictim();
-         document.getElementById('nameVictim').value = '';
-         document.getElementById('ageVictim').value = '';
-         document.getElementById('genderVictim').value = '';
-         document.getElementById('injury_type').value = '';
+         getWitness();
+         document.getElementById('nameWitness').value = '';
+         document.getElementById('contact_number').value = '';
+         document.getElementById('statement').value = '';
 
          document.getElementById('tosttittle').innerHTML = 'Success';
-         document.getElementById('tostbody').innerHTML = 'victim added successfully';
+         document.getElementById('tostbody').innerHTML = 'Witness added successfully';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       } else {
          document.getElementById('tosttittle').innerHTML = 'Error';
-         document.getElementById('tostbody').innerHTML = 'victim added failed';
+         document.getElementById('tostbody').innerHTML = 'Witness added failed';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       }
    }
-   let victimbtn = document.getElementById('victimbtn');
-   victimbtn.addEventListener('click', addvictim);
+   let Witnessbtn = document.getElementById('Witnessbtn');
+   Witnessbtn.addEventListener('click', addWitness);
 
-   //delete victim
-   const deletevictim = async (id) => {
-      const response = await fetch(`/api/victims/${id}`, {
+   //delete Witness
+   const deleteWitness = async (id) => {
+      const response = await fetch(`/api/witness/${id}`, {
          method: 'DELETE'
       });
       const data = await response.json();
       console.log(data);
       if (data.status === true) {
-         getvictim();
+         getWitness();
          document.getElementById('tosttittle').innerHTML = 'Success';
-         document.getElementById('tostbody').innerHTML = 'victim deleted successfully';
+         document.getElementById('tostbody').innerHTML = 'Witness deleted successfully';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       } else {
          document.getElementById('tosttittle').innerHTML = 'Error';
-         document.getElementById('tostbody').innerHTML = 'victim deleted failed';
+         document.getElementById('tostbody').innerHTML = 'Witness deleted failed';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       }
    }
-   //edit victim in id formType change for eidt victim
-   const editvictim = async (id) => {
-      document.getElementById('formTypeVictim').innerHTML = 'Edit victim';
-      const response = await fetch(`/api/victims/${id}`);
+   //edit Witness in id formType change for eidt Witness
+   const editWitness = async (id) => {
+      document.getElementById('formTypeWitness').innerHTML = 'Edit Witness';
+      const response = await fetch(`/api/witness/${id}`);
       const data = await response.json();
       console.log(data);
-      document.getElementById('nameVictim').value = data.name;
-      document.getElementById('ageVictim').value = data.age;
-      document.getElementById('genderVictim').value = data.gender;
-      document.getElementById('injury_type').value = data.injury_type;
+      document.getElementById('nameWitness').value = data.name;
+      document.getElementById('contact_number').value = data.contact_number;
+      document.getElementById('statement').value = data.statement;
 
-      victimbtn.innerHTML = 'Update';
-      victimbtn.removeEventListener('click', addvictim);
-      victimbtn.addEventListener('click', () => updatevictim(id));
+      Witnessbtn.innerHTML = 'Update';
+      Witnessbtn.removeEventListener('click', addWitness);
+      Witnessbtn.addEventListener('click', () => updateWitness(id));
    }
 
-   //update victim
-   const updatevictim = async (id) => {
-      const name = document.getElementById('nameVictim').value;
-      const age = document.getElementById('ageVictim').value;
-      const gender = document.getElementById('genderVictim').value;
-      const injury_type = document.getElementById('injury_type').value;
-      const response = await fetch(`/api/victims/${id}`, {
+   //update Witness
+   const updateWitness = async (id) => {
+      const name = document.getElementById('nameWitness').value;
+      const contact_number = document.getElementById('contact_number').value;
+      const statement = document.getElementById('statement').value;
+      const response = await fetch(`/api/witness/${id}`, {
          method: 'PATCH',
          headers: {
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({
             name: name,
-            age: age,
-            gender: gender,
-            injury_type: injury_type
+            contact_number: contact_number,
+            statement: statement
          })
       });
       const data = await response.json();
       console.log(data);
       if (data.status === true) {
-         getvictim();
-         document.getElementById('nameVictim').value = '';
-         document.getElementById('ageVictim').value = '';
-         document.getElementById('genderVictim').value = '';
-         document.getElementById('injury_type').value = '';
-         document.getElementById('formTypeVictim').innerHTML = 'Create victim';
-         victimbtn.innerHTML = 'Submit';
-         victimbtn.removeEventListener('click', updatevictim);
-         victimbtn.addEventListener('click', addvictim);
+         getWitness();
+         document.getElementById('nameWitness').value = '';
+         document.getElementById('contact_number').value = '';
+         document.getElementById('statement').value = '';
+         document.getElementById('formTypeWitness').innerHTML = 'Create Witness';
+         Witnessbtn.innerHTML = 'Submit';
+         Witnessbtn.removeEventListener('click', updateWitness);
+         Witnessbtn.addEventListener('click', addWitness);
          document.getElementById('tosttittle').innerHTML = 'Success';
-         document.getElementById('tostbody').innerHTML = 'victim updated successfully';
+         document.getElementById('tostbody').innerHTML = 'Witness updated successfully';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       } else {
          document.getElementById('tosttittle').innerHTML = 'Error';
-         document.getElementById('tostbody').innerHTML = 'victim updated failed';
+         document.getElementById('tostbody').innerHTML = 'Witness updated failed';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       }
    }
-   // add new update when edit victim  avalabe in id createvictim
-   const createvictim2 = document.getElementById('addvictim');
-   createvictim2.addEventListener('click', () => {
-      document.getElementById('nameVictim').value = '';
-      document.getElementById('ageVictim').value = '';
-      document.getElementById('genderVictim').value = '';
-      document.getElementById('injury_type').value = '';
-      document.getElementById('formTypeVictim').innerHTML = 'Create victim';
-      victimbtn.innerHTML = 'Submit';
-      victimbtn.removeEventListener('click', updatevictim);
-      victimbtn.addEventListener('click', addvictim);
+   // add new update when edit Witness  avalabe in id createWitness
+   const createWitness2 = document.getElementById('addWitness');
+   createWitness2.addEventListener('click', () => {
+      document.getElementById('nameWitness').value = '';
+      document.getElementById('contact_number').value = '';
+      document.getElementById('statement').value = '';
+      document.getElementById('formTypeWitness').innerHTML = 'Create Witness';
+      Witnessbtn.innerHTML = 'Submit';
+      Witnessbtn.removeEventListener('click', updateWitness);
+      Witnessbtn.addEventListener('click', addWitness);
    })
 
 

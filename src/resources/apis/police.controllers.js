@@ -6,7 +6,7 @@ import { tryCatchWrapper } from "../../middlewares/tryCatchWrapper.js";
  * @returns note object
  */
 async function getTrafficpolice(id) {
-  let sql = "SELECT * FROM Trafficpolices WHERE police_id = ?";
+  let sql = "SELECT * FROM trafficpolice WHERE police_id = ?";
   const [rows] = await pool.query(sql, [id]);
   return rows[0];
 }
@@ -16,7 +16,7 @@ async function getTrafficpolice(id) {
  * @route GET /notes
  */
 export const getAllTrafficpolice = tryCatchWrapper(async function (req, res, next) {
-  let sql = "SELECT * from Trafficpolices";
+  let sql = "SELECT * from trafficpolice";
   const [rows] = await pool.query(sql);
   if (!rows.length) return res.status(204).json({ message: "empty list" });
 
@@ -42,12 +42,12 @@ export const getSingleTrafficpolice = tryCatchWrapper(async function (req, res, 
  */
 export const createTrafficpolice = tryCatchWrapper(async function (req, res, next) {
   const { police_id, name, badge_number, contact_number } = req.body;
-  if (!police_id || !name || !badge_number || !contact_number)
+  if (!name || !badge_number || !contact_number)
   return next(createCustomError("All fields are required", 400));
 const [rows] = await pool.query("SELECT MAX(police_id) AS id FROM Trafficpolice");
 console.log( rows[0].id);
-  let sql = "INSERT INTO Trafficpolice (police_id , name, badge_number, contact_number) VALUES (?, ?, ?, ?)";
-  await pool.query(sql, [rows[0].id+1, name, badge_number, contact_number]);
+  let sql = "INSERT INTO trafficpolice (police_id , name, badge_number, contact_number) VALUES (?, ?, ?, ?)";
+  await pool.query(sql, [rows[0].id  ? rows[0].id+1 : 1, name, badge_number, contact_number]);
 
   return res.status(201).json({ message: "Traffic Plice has been created", status: true  });
 });
@@ -60,13 +60,13 @@ export const updateTrafficpolice = tryCatchWrapper(async function (req, res, nex
   const { id } = req.params;
   const { police_id, name, badge_number, contact_number } = req.body;
 
-  if (!id || !police_id || !name || !badge_number || !contact_number)
+  if (!id || !name || !badge_number || !contact_number)
     return next(createCustomError("All fields are required", 400));
 
   const note = await getTrafficpolice(id);
   if (!note) return next(createCustomError("note not found", 404));
 
-  let sql = "UPDATE Trafficpolice SET name = ?, badge_number = ?, contact_number = ? WHERE police_id = ?";
+  let sql = "UPDATE trafficpolice SET name = ?, badge_number = ?, contact_number = ? WHERE police_id = ?";
   await pool.query(sql, [name, badge_number, contact_number, id]);
 
   return res.status(201).json({ message: "Traffic Plice has been updated", status: true  });
@@ -84,7 +84,7 @@ export const deleteTrafficpolice = tryCatchWrapper(async function (req, res, nex
   const note = await getTrafficpolice(id);
   if (!note) return next(createCustomError("note not found", 404));
 
-  let sql = "DELETE FROM Trafficpolice WHERE police_id = ?";
+  let sql = "DELETE FROM trafficpolice WHERE police_id = ?";
   await pool.query(sql, [id]);
 
   return res.status(200).json({ message: "note has been deleted", status: true  });

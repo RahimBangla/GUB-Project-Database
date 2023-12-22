@@ -20,7 +20,7 @@ export const getAllWitnesse = tryCatchWrapper(async function (req, res, next) {
   const [rows] = await pool.query(sql);
   if (!rows.length) return res.status(204).json({ message: "empty list", status: true  });
 
-  return res.status(200).json({ data: rows });
+  return res.status(200).json({ data: rows, status: true });
 });
 
 /**
@@ -47,7 +47,7 @@ export const createWitnesse = tryCatchWrapper(async function (req, res, next) {
 const [rows] = await pool.query("SELECT MAX(witness_id) AS id FROM witnesses");
 console.log( rows[0].id);
   let sql = "INSERT INTO witnesses (witness_id , name, contact_number, statement) VALUES (?, ?, ?, ?)";
-  await pool.query(sql, [rows[0].id+1, name, contact_number, statement]);
+  await pool.query(sql, [rows[0].id  ? rows[0].id+1 : 1, name, contact_number, statement]);
 
   return res.status(201).json({ message: "Witnesse has been created", status: true  });
 });

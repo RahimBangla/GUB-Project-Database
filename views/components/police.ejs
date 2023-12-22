@@ -3,38 +3,35 @@
       <div class="bg-body-tertiary border rounded-3">
          <div class="p-5 mb-4 bg-body-tertiary rounded-3">
             <div class="py-5">
-               <p class=" fw-bold" id="formTypeVictim">Create victim</p>
+               <p class=" fw-bold" id="formTypePolice">Create Police</p>
                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                  <input type="text" class="form-control" placeholder="victim Name" id="nameVictim">
+                  <input type="text" class="form-control" placeholder="Police Name" id="namePolice">
                   <br>
-                  <input type="text" class="form-control" placeholder="age" id="ageVictim">
+                  <input type="text" class="form-control" placeholder="badge_number" id="badge_numberPolice">
                   <br>
-                  <input type="text" class="form-control" placeholder="genderVictim" id="genderVictim">
+                  <input type="text" class="form-control" placeholder="contact_number" id="contact_numberPolice">
                   <br>
-                  <input type="text" class="form-control" placeholder="injury_type" id="injury_type">
-                  <br>
-                  <button class="btn btn-primary btn-md" type="button" id="victimbtn">Submit</button>
+                  <button class="btn btn-primary btn-md" type="button" id="Policebtn">Submit</button>
                </form>
             </div>
          </div>
       </div>
       <div class="bg-body-tertiary border rounded-3">
          <div class="container-fluid py-5">
-            <button class="btn btn-success mb-3" id="addvictim">Add
+            <button class="btn btn-success mb-3" id="addPolice">Add
                New
             </button>
             <table class="table">
                <thead>
                   <tr>
-                     <th scope="col">#victim Id</th>
+                     <th scope="col">#Police Id</th>
                      <th scope="col">name</th>
-                     <th scope="col">age</th>
-                     <th scope="col">gender</th>
-                     <th scope="col">injury_type</th>
+                     <th scope="col">badge_number</th>
+                     <th scope="col">contact_number</th>
                      <th scope="col">Actions</th>
                   </tr>
                </thead>
-               <tbody id="victimTr">
+               <tbody id="PoliceTr">
 
                </tbody>
             </table>
@@ -46,166 +43,157 @@
 <script>
 
    //get data array object and show in table  using fetch api
-   const getvictim = async () => {
-      const response = await fetch('/api/victims');
+   const getPolice = async () => {
+      const response = await fetch('/api/police');
       const data = await response.json();
       console.log(data);
       let html = ``;
-      data.data.forEach(victim => {
+      data.data.forEach(Police => {
          html += `
             <tr>
-               <th scope="row">${victim.victim_id}</th>
-               <td>${victim.name}</td>
-               <td>${victim.age}</td>
-               <td>${victim.gender}</td>
-               <td>${victim.injury_type}</td>
+               <th scope="row">${Police.police_id}</th>
+               <td>${Police.name}</td>
+               <td>${Police.badge_number}</td>
+               <td>${Police.contact_number}</td>
                <td>
-                  <button class="btn btn-warning btn-sm"  onclick="editvictim(${victim.victim_id})">Edit</button>
-                  <button class="btn btn-danger btn-sm" onclick="deletevictim(${victim.victim_id})">Delete</button>
+                  <button class="btn btn-warning btn-sm"  onclick="editPolice(${Police.police_id})">Edit</button>
+                  <button class="btn btn-danger btn-sm" onclick="deletePolice(${Police.police_id})">Delete</button>
                </td>
             </tr>
          `;
       });
-      victimTr.innerHTML = html;
+      PoliceTr.innerHTML = html;
    }
-   getvictim();
+   getPolice();
 
-   //add victim
-   const addvictim = async () => {
-      const name = document.getElementById('nameVictim').value;
-      const age = document.getElementById('ageVictim').value;
-      const gender = document.getElementById('genderVictim').value;
-      const injury_type = document.getElementById('injury_type').value;
+   //add Police
+   const addPolice = async () => {
+      const name = document.getElementById('namePolice').value;
+      const badge_number = document.getElementById('badge_numberPolice').value;
+      const contact_number = document.getElementById('contact_numberPolice').value;
 
-      const response = await fetch('/api/victims', {
+      const response = await fetch('/api/police', {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({
             name: name,
-            age: age,
-            gender: gender,
-            injury_type: injury_type
+            badge_number: badge_number,
+            contact_number: contact_number
          })
       });
       const data = await response.json();
       console.log(data);
       if (data.status === true) {
-         getvictim();
-         document.getElementById('nameVictim').value = '';
-         document.getElementById('ageVictim').value = '';
-         document.getElementById('genderVictim').value = '';
-         document.getElementById('injury_type').value = '';
+         getPolice();
+         document.getElementById('namePolice').value = '';
+         document.getElementById('badge_numberPolice').value = '';
+         document.getElementById('contact_numberPolice').value = '';
 
          document.getElementById('tosttittle').innerHTML = 'Success';
-         document.getElementById('tostbody').innerHTML = 'victim added successfully';
+         document.getElementById('tostbody').innerHTML = 'Police added successfully';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       } else {
          document.getElementById('tosttittle').innerHTML = 'Error';
-         document.getElementById('tostbody').innerHTML = 'victim added failed';
+         document.getElementById('tostbody').innerHTML = 'Police added failed';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       }
    }
-   let victimbtn = document.getElementById('victimbtn');
-   victimbtn.addEventListener('click', addvictim);
+   let Policebtn = document.getElementById('Policebtn');
+   Policebtn.addEventListener('click', addPolice);
 
-   //delete victim
-   const deletevictim = async (id) => {
-      const response = await fetch(`/api/victims/${id}`, {
+   //delete Police
+   const deletePolice = async (id) => {
+      const response = await fetch(`/api/police/${id}`, {
          method: 'DELETE'
       });
       const data = await response.json();
       console.log(data);
       if (data.status === true) {
-         getvictim();
+         getPolice();
          document.getElementById('tosttittle').innerHTML = 'Success';
-         document.getElementById('tostbody').innerHTML = 'victim deleted successfully';
+         document.getElementById('tostbody').innerHTML = 'Police deleted successfully';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       } else {
          document.getElementById('tosttittle').innerHTML = 'Error';
-         document.getElementById('tostbody').innerHTML = 'victim deleted failed';
+         document.getElementById('tostbody').innerHTML = 'Police deleted failed';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       }
    }
-   //edit victim in id formType change for eidt victim
-   const editvictim = async (id) => {
-      document.getElementById('formTypeVictim').innerHTML = 'Edit victim';
-      const response = await fetch(`/api/victims/${id}`);
+   //edit Police in id formType change for eidt Police
+   const editPolice = async (id) => {
+      document.getElementById('formTypePolice').innerHTML = 'Edit Police';
+      const response = await fetch(`/api/police/${id}`);
       const data = await response.json();
       console.log(data);
-      document.getElementById('nameVictim').value = data.name;
-      document.getElementById('ageVictim').value = data.age;
-      document.getElementById('genderVictim').value = data.gender;
-      document.getElementById('injury_type').value = data.injury_type;
+      document.getElementById('namePolice').value = data.name;
+      document.getElementById('badge_numberPolice').value = data.badge_number;
+      document.getElementById('contact_numberPolice').value = data.contact_number;
 
-      victimbtn.innerHTML = 'Update';
-      victimbtn.removeEventListener('click', addvictim);
-      victimbtn.addEventListener('click', () => updatevictim(id));
+      Policebtn.innerHTML = 'Update';
+      Policebtn.removeEventListener('click', addPolice);
+      Policebtn.addEventListener('click', () => updatePolice(id));
    }
 
-   //update victim
-   const updatevictim = async (id) => {
-      const name = document.getElementById('nameVictim').value;
-      const age = document.getElementById('ageVictim').value;
-      const gender = document.getElementById('genderVictim').value;
-      const injury_type = document.getElementById('injury_type').value;
-      const response = await fetch(`/api/victims/${id}`, {
+   //update Police
+   const updatePolice = async (id) => {
+      const name = document.getElementById('namePolice').value;
+      const badge_number = document.getElementById('badge_numberPolice').value;
+      const contact_number = document.getElementById('contact_numberPolice').value;
+      const response = await fetch(`/api/police/${id}`, {
          method: 'PATCH',
          headers: {
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({
             name: name,
-            age: age,
-            gender: gender,
-            injury_type: injury_type
+            badge_number: badge_number,
+            contact_number: contact_number
          })
       });
       const data = await response.json();
       console.log(data);
       if (data.status === true) {
-         getvictim();
-         document.getElementById('nameVictim').value = '';
-         document.getElementById('ageVictim').value = '';
-         document.getElementById('genderVictim').value = '';
-         document.getElementById('injury_type').value = '';
-         document.getElementById('formTypeVictim').innerHTML = 'Create victim';
-         victimbtn.innerHTML = 'Submit';
-         victimbtn.removeEventListener('click', updatevictim);
-         victimbtn.addEventListener('click', addvictim);
+         getPolice();
+         document.getElementById('namePolice').value = '';
+         document.getElementById('badge_numberPolice').value = '';
+         document.getElementById('contact_numberPolice').value = '';
+         document.getElementById('formTypePolice').innerHTML = 'Create Police';
+         Policebtn.innerHTML = 'Submit';
+         Policebtn.removeEventListener('click', updatePolice);
+         Policebtn.addEventListener('click', addPolice);
          document.getElementById('tosttittle').innerHTML = 'Success';
-         document.getElementById('tostbody').innerHTML = 'victim updated successfully';
+         document.getElementById('tostbody').innerHTML = 'Police updated successfully';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       } else {
          document.getElementById('tosttittle').innerHTML = 'Error';
-         document.getElementById('tostbody').innerHTML = 'victim updated failed';
+         document.getElementById('tostbody').innerHTML = 'Police updated failed';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       }
    }
-   // add new update when edit victim  avalabe in id createvictim
-   const createvictim2 = document.getElementById('addvictim');
-   createvictim2.addEventListener('click', () => {
-      document.getElementById('nameVictim').value = '';
-      document.getElementById('ageVictim').value = '';
-      document.getElementById('genderVictim').value = '';
-      document.getElementById('injury_type').value = '';
-      document.getElementById('formTypeVictim').innerHTML = 'Create victim';
-      victimbtn.innerHTML = 'Submit';
-      victimbtn.removeEventListener('click', updatevictim);
-      victimbtn.addEventListener('click', addvictim);
+   // add new update when edit Police  avalabe in id createPolice
+   const createPolice2 = document.getElementById('addPolice');
+   createPolice2.addEventListener('click', () => {
+      document.getElementById('namePolice').value = '';
+      document.getElementById('badge_numberPolice').value = '';
+      document.getElementById('contact_numberPolice').value = '';
+      document.getElementById('formTypePolice').innerHTML = 'Create Police';
+      Policebtn.innerHTML = 'Submit';
+      Policebtn.removeEventListener('click', updatePolice);
+      Policebtn.addEventListener('click', addPolice);
    })
 
 

@@ -83,8 +83,8 @@ router.route("/police/:id").get(getSingleTrafficpolice).patch(updateTrafficpolic
 router.route("/victims").get(getAllVictim).post(createVictim);
 router.route("/victims/:id").get(getSingleVictim).patch(updateVictim).delete(deleteVictim);
 
-router.route("/witnesses").get(getAllWitnesse).post(createWitnesse);
-router.route("/witnesses/:id").get(getSingleWitnesse).patch(updateWitnesse).delete(deleteWitnesse);
+router.route("/witness").get(getAllWitnesse).post(createWitnesse);
+router.route("/witness/:id").get(getSingleWitnesse).patch(updateWitnesse).delete(deleteWitnesse);
 
 
 router.route("/api").get(getAllNotes).post(createNote);

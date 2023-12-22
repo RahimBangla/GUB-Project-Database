@@ -47,7 +47,7 @@ export const createVehicle = tryCatchWrapper(async function (req, res, next) {
 const [rows] = await pool.query("SELECT MAX(vehicle_id) AS id FROM vehicles");
 console.log( rows[0].id);
   let sql = "INSERT INTO vehicles (vehicle_id , vehicle_type, mechanical_problem, license_number) VALUES (?, ?, ?, ?)";
-  await pool.query(sql, [rows[0].id+1, vehicle_type, mechanical_problem, license_number]);
+  await pool.query(sql, [rows[0].id  ? rows[0].id+1 : 1, vehicle_type, mechanical_problem, license_number]);
 
   return res.status(201).json({ message: "Vehicle has been created", status: true  });
 });

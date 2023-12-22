@@ -46,12 +46,18 @@
             </div>
 
             <div id="logged" hidden>
-
                <%- include('../partials/navbar'); %>
+                  <div id="app">
+
+                  </div>
 
 
-                  <%- include('../components/vehicle'); %>
-                     <%- include('../components/victim'); %>
+
+                  <%- include('../components/police'); %>
+                     <%- include('../components/vehicle'); %>
+                        <%- include('../components/victim'); %>
+                           <%- include('../components/witnesse.ejs'); %>
+
 
 
 
@@ -84,6 +90,9 @@
       catch (err) {
          console.log(err);
       }
+
+
+
       // api post request for crate vehicle 
       const createVehicle = async (vehicle_type, mechanical_problem, license_number) => {
          const response = await fetch('/api/vehicles', {
