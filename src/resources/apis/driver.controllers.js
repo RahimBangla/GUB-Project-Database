@@ -41,11 +41,11 @@ export const getSingleDrivers = tryCatchWrapper(async function (req, res, next) 
  * @route POST /notes
  */
 export const createDrivers = tryCatchWrapper(async function (req, res, next) {
-  const { vehicle_id, nid_number, license_number, contact_number, age } = req.body;
-  if (!vehicle_id || !nid_number || !license_number || !contact_number || !age)
+  const { vehicle_id, name, nid_number, license_number, contact_number, age } = req.body;
+  if (!vehicle_id || !name || !nid_number || !license_number || !contact_number || !age)
   return next(createCustomError("All fields are required", 400));
-  let sql = "INSERT INTO drivers (vehicle_id , nid_number, license_number, contact_number, age) VALUES (?, ?, ?, ?, ?)";
-  await pool.query(sql, [vehicle_id, nid_number, license_number, contact_number, age]);
+  let sql = "INSERT INTO drivers (vehicle_id , name, nid_number, license_number, contact_number, age) VALUES (?, ?, ?, ?, ?, ?)";
+  await pool.query(sql, [vehicle_id, name, nid_number, license_number, contact_number, age]);
 
   return res.status(201).json({ message: "Drivers has been created", status: true  });
 });
@@ -56,16 +56,16 @@ export const createDrivers = tryCatchWrapper(async function (req, res, next) {
  */
 export const updateDrivers = tryCatchWrapper(async function (req, res, next) {
   const { id } = req.params;
-  const { vehicle_id, nid_number, license_number, contact_number, age  } = req.body;
+  const { vehicle_id, name, nid_number, license_number, contact_number, age  } = req.body;
 
-  if (!id || !vehicle_id || !nid_number || !license_number || !contact_number || !age)
+  if (!id || !vehicle_id || !name || !nid_number || !license_number || !contact_number || !age)
     return next(createCustomError("All fields are required", 400));
 
   const note = await getDrivers(id);
   if (!note) return next(createCustomError("note not found", 404));
 
-  let sql = "UPDATE Drivers SET vehicle_id = ?, nid_number = ?, license_number = ?, contact_number = ?, age = ? WHERE driver_id = ?";
-  await pool.query(sql, [vehicle_id, nid_number, license_number, contact_number, age]);
+  let sql = "UPDATE drivers SET vehicle_id = ?, name = ?, nid_number = ?, license_number = ?, contact_number = ?, age = ? WHERE driver_id = ?";
+  await pool.query(sql, [vehicle_id, name, nid_number, license_number, contact_number, age, id]);
 
   return res.status(201).json({ message: "Drivers has been updated", status: true  });
 });
@@ -82,7 +82,7 @@ export const deleteDrivers = tryCatchWrapper(async function (req, res, next) {
   const note = await getDrivers(id);
   if (!note) return next(createCustomError("note not found", 404));
 
-  let sql = "DELETE FROM Drivers WHERE driver_id = ?";
+  let sql = "DELETE FROM drivers WHERE driver_id = ?";
   await pool.query(sql, [id]);
 
   return res.status(200).json({ message: "Drivers has been deleted", status: true  });

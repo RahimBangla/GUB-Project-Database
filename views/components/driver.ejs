@@ -7,13 +7,18 @@
                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
                   <input type="text" class="form-control" placeholder="Driver Name" id="nameDriver">
                   <br>
+                  <select class="form-select" aria-label="Default select" id="driversVehicleId">
+                     <option selected>Open this select menu</option>
+
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" placeholder="nid_number" id="nid_numberDriver">
+                  <br>
+                  <input type="text" class="form-control" placeholder="license_number" id="license_numberDriver">
+                  <br>
+                  <input type="text" class="form-control" placeholder="contact_number" id="contact_numberDriver">
+                  <br>
                   <input type="text" class="form-control" placeholder="age" id="ageDriver">
-                  <br>
-                  <input type="text" class="form-control" placeholder="genderDriver" id="genderDriver">
-                  <br>
-                  <input type="text" class="form-control" placeholder="injury_type" id="injury_type">
-                  <br>
-                  <input type="text" class="form-control" placeholder="injury_type" id="injury_type">
                   <br>
                   <button class="btn btn-primary btn-md" type="button" id="Driverbtn">Submit</button>
                </form>
@@ -48,6 +53,7 @@
 
 <script>
 
+
    //get data array object and show in table  using fetch api
    const getDriver = async () => {
       const response = await fetch('/api/Drivers');
@@ -77,9 +83,11 @@
    //add Driver
    const addDriver = async () => {
       const name = document.getElementById('nameDriver').value;
+      const vehicle_id = document.getElementById('driversVehicleId').value;
+      const nid_number = document.getElementById('nid_numberDriver').value;
+      const license_number = document.getElementById('license_numberDriver').value;
+      const contact_number = document.getElementById('contact_numberDriver').value;
       const age = document.getElementById('ageDriver').value;
-      const gender = document.getElementById('genderDriver').value;
-      const injury_type = document.getElementById('injury_type').value;
 
       const response = await fetch('/api/Drivers', {
          method: 'POST',
@@ -88,9 +96,11 @@
          },
          body: JSON.stringify({
             name: name,
-            age: age,
-            gender: gender,
-            injury_type: injury_type
+            vehicle_id: vehicle_id,
+            nid_number: nid_number,
+            license_number: license_number,
+            contact_number: contact_number,
+            age: age
          })
       });
       const data = await response.json();
@@ -98,9 +108,12 @@
       if (data.status === true) {
          getDriver();
          document.getElementById('nameDriver').value = '';
+         document.getElementById('driversVehicleId').value = 'Select Item';
+         document.getElementById('nid_numberDriver').value = '';
+         document.getElementById('license_numberDriver').value = '';
+         document.getElementById('contact_numberDriver').value = '';
          document.getElementById('ageDriver').value = '';
-         document.getElementById('genderDriver').value = '';
-         document.getElementById('injury_type').value = '';
+
 
          document.getElementById('tosttittle').innerHTML = 'Success';
          document.getElementById('tostbody').innerHTML = 'Driver added successfully';
@@ -147,9 +160,12 @@
       const data = await response.json();
       console.log(data);
       document.getElementById('nameDriver').value = data.name;
+      document.getElementById('driversVehicleId').value = data.vehicle_id;
+      document.getElementById('nid_numberDriver').value = data.nid_number;
+      document.getElementById('license_numberDriver').value = data.license_number;
+      document.getElementById('contact_numberDriver').value = data.contact_number;
       document.getElementById('ageDriver').value = data.age;
-      document.getElementById('genderDriver').value = data.gender;
-      document.getElementById('injury_type').value = data.injury_type;
+
 
       Driverbtn.innerHTML = 'Update';
       Driverbtn.removeEventListener('click', addDriver);
@@ -159,9 +175,11 @@
    //update Driver
    const updateDriver = async (id) => {
       const name = document.getElementById('nameDriver').value;
+      const vehicle_id = document.getElementById('driversVehicleId').value;
+      const nid_number = document.getElementById('nid_numberDriver').value;
+      const license_number = document.getElementById('license_numberDriver').value;
+      const contact_number = document.getElementById('contact_numberDriver').value;
       const age = document.getElementById('ageDriver').value;
-      const gender = document.getElementById('genderDriver').value;
-      const injury_type = document.getElementById('injury_type').value;
       const response = await fetch(`/api/Drivers/${id}`, {
          method: 'PATCH',
          headers: {
@@ -169,9 +187,11 @@
          },
          body: JSON.stringify({
             name: name,
-            age: age,
-            gender: gender,
-            injury_type: injury_type
+            vehicle_id: vehicle_id,
+            nid_number: nid_number,
+            license_number: license_number,
+            contact_number: contact_number,
+            age: age
          })
       });
       const data = await response.json();
@@ -179,9 +199,11 @@
       if (data.status === true) {
          getDriver();
          document.getElementById('nameDriver').value = '';
+         document.getElementById('driversVehicleId').value = 'Select Item';
+         document.getElementById('nid_numberDriver').value = '';
+         document.getElementById('license_numberDriver').value = '';
+         document.getElementById('contact_numberDriver').value = '';
          document.getElementById('ageDriver').value = '';
-         document.getElementById('genderDriver').value = '';
-         document.getElementById('injury_type').value = '';
          document.getElementById('formTypeDriver').innerHTML = 'Create Driver';
          Driverbtn.innerHTML = 'Submit';
          Driverbtn.removeEventListener('click', updateDriver);
@@ -203,9 +225,11 @@
    const createDriver2 = document.getElementById('addDriver');
    createDriver2.addEventListener('click', () => {
       document.getElementById('nameDriver').value = '';
+      document.getElementById('driversVehicleId').value = 'Select Item';
+      document.getElementById('nid_numberDriver').value = '';
+      document.getElementById('license_numberDriver').value = '';
+      document.getElementById('contact_numberDriver').value = '';
       document.getElementById('ageDriver').value = '';
-      document.getElementById('genderDriver').value = '';
-      document.getElementById('injury_type').value = '';
       document.getElementById('formTypeDriver').innerHTML = 'Create Driver';
       Driverbtn.innerHTML = 'Submit';
       Driverbtn.removeEventListener('click', updateDriver);
