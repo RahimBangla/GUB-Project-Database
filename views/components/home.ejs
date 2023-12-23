@@ -1,0 +1,59 @@
+<div class="container-fluid pb-3 pt-2">
+   <div class="d-grid gap-3">
+      <div class="bg-body-tertiary border rounded-3">
+         <div class="container-fluid py-2">
+            <h5 class="">Accident List</h5>
+            <table class="table">
+               <thead>
+                  <tr>
+                     <th scope="col">#Accident Id</th>
+                     <th scope="col">victim </th>
+                     <th scope="col">vehicle </th>
+                     <th scope="col">police </th>
+                     <th scope="col">witness </th>
+                     <th scope="col">location</th>
+                     <th scope="col">date_occurred</th>
+                     <th scope="col">description</th>
+                     <th scope="col">status</th>
+                  </tr>
+               </thead>
+               <tbody id="AccidentTable">
+
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+</div>
+
+<script>
+
+   const AccidentTable = document.getElementById('AccidentTable');
+   //get data array object and show in table  using fetch api
+   const getAccidentAll = async () => {
+      const response = await fetch('/api/accident/all');
+      const data = await response.json();
+      console.log(data);
+      let html = ``;
+      data.data.forEach(Accident => {
+         var date = new Date(Accident.date_occurred);
+         html += `
+            <tr>
+               <th scope="row">${Accident.case_id}</th>
+               <td>${Accident.victim_id}</td>
+               <td>${Accident.vehicle_id}</td>
+               <td>${Accident.police_id}</td>
+               <td>${Accident.witness_id}</td>
+               <td>${Accident.location}</td>
+               <td>${date.getDate()}-${date.getMonth()}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} </td>
+               <td>${Accident.description}</td>
+               <td>${Accident.status}</td>
+            </tr>
+         `;
+      });
+      AccidentTable.innerHTML = html;
+   }
+   getAccidentAll();
+
+
+</script>

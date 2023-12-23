@@ -64,13 +64,14 @@
       });
       vehicleTr.innerHTML = html;
 
-      let html2 = `<option selected>Select Item</option>`;
+      let html2 = `<option selected>Select Item Vehicle</option>`;
       data.data.forEach(vehicle => {
          html2 += `
             <option value="${vehicle.vehicle_id}">${vehicle.vehicle_type}</option>
          `;
       });
       document.getElementById('driversVehicleId').innerHTML = html2;
+      document.getElementById('AccidentsVehicleId').innerHTML = html2;
    }
    getVehicle();
 

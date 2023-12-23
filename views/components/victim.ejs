@@ -67,6 +67,13 @@
          `;
       });
       victimTr.innerHTML = html;
+      let html2 = `<option selected>Select Item Victim</option>`;
+      data.data.forEach(Victim => {
+         html2 += `
+            <option value="${Victim.victim_id}">${Victim.name}</option>
+         `;
+      });
+      document.getElementById('AccidentsVictimId').innerHTML = html2;
    }
    getvictim();
 

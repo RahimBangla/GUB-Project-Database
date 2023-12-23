@@ -22,6 +22,7 @@ import {
   createAccident,
   deleteAccident,
   getAllAccident,
+  getAllAccidentJoin,
   getSingleAccident,
   updateAccident
 } from "./accident.controllers.js";
@@ -69,6 +70,7 @@ router.route("/vehicle/:id").get(getSingleVehicle).patch(updateVehicle).delete(d
 
 
 router.route("/accident").get(getAllAccident).post(createAccident);
+router.route("/accident/all").get(getAllAccidentJoin);
 router.route("/accident/:id").get(getSingleAccident).patch(updateAccident).delete(deleteAccident);
 
 router.route("/drivers").get(getAllDrivers).post(createDrivers);

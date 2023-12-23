@@ -63,6 +63,13 @@
          `;
       });
       WitnessTr.innerHTML = html;
+      let html2 = `<option selected>Select Item Witness</option>`;
+      data.data.forEach(Witness => {
+         html2 += `
+            <option value="${Witness.witness_id}">${Witness.name}</option>
+         `;
+      });
+      document.getElementById('AccidentsWitnessId').innerHTML = html2;
    }
    getWitness();
 

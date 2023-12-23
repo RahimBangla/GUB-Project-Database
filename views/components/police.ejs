@@ -63,6 +63,13 @@
          `;
       });
       PoliceTr.innerHTML = html;
+      let html2 = `<option selected>Select Item Police</option>`;
+      data.data.forEach(Police => {
+         html2 += `
+            <option value="${Police.police_id}">${Police.name}</option>
+         `;
+      });
+      document.getElementById('AccidentsPoliceId').innerHTML = html2;
    }
    getPolice();
 

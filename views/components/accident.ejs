@@ -3,38 +3,62 @@
       <div class="bg-body-tertiary border rounded-3">
          <div class="p-5 mb-4 bg-body-tertiary rounded-3">
             <div class="py-5">
-               <p class=" fw-bold" id="formTypeVictim">Create victim</p>
+               <p class=" fw-bold" id="formTypeAccident">Create Accident Case</p>
                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                  <input type="text" class="form-control" placeholder="victim Name" id="nameVictim">
+
+                  <select class="form-select" aria-label="Default select Victim" id="AccidentsVictimId">
+                     <option selected>Open this select menu</option>
+
+                  </select>
                   <br>
-                  <input type="text" class="form-control" placeholder="age" id="ageVictim">
+                  <select class="form-select" aria-label="Default select Vehicle" id="AccidentsVehicleId">
+                     <option selected>Open this select menu</option>
+
+                  </select>
                   <br>
-                  <input type="text" class="form-control" placeholder="genderVictim" id="genderVictim">
+                  <select class="form-select" aria-label="Default select Plice" id="AccidentsPoliceId">
+                     <option selected>Open this select menu</option>
+
+                  </select>
                   <br>
-                  <input type="text" class="form-control" placeholder="injury_type" id="injury_type">
+                  <select class="form-select" aria-label="Default select Witness" id="AccidentsWitnessId">
+                     <option selected>Open this select menu</option>
+
+                  </select>
                   <br>
-                  <button class="btn btn-primary btn-md" type="button" id="victimbtn">Submit</button>
+                  <input type="text" class="form-control" placeholder="location" id="locationAccident">
+                  <br>
+                  <input type="text" class="form-control" placeholder="description" id="descriptionAccident">
+                  <br>
+                  <input type="text" class="form-control" placeholder="status" id="statusAccident">
+                  <br>
+
+                  <button class="btn btn-primary btn-md" type="button" id="Accidentbtn">Submit</button>
                </form>
             </div>
          </div>
       </div>
       <div class="bg-body-tertiary border rounded-3">
          <div class="container-fluid py-5">
-            <button class="btn btn-success mb-3" id="addvictim">Add
+            <button class="btn btn-success mb-3" id="addAccident">Add
                New
             </button>
             <table class="table">
                <thead>
                   <tr>
-                     <th scope="col">#victim Id</th>
-                     <th scope="col">name</th>
-                     <th scope="col">age</th>
-                     <th scope="col">gender</th>
-                     <th scope="col">injury_type</th>
+                     <th scope="col">#Accident Id</th>
+                     <th scope="col">victim_id </th>
+                     <th scope="col">vehicle_id </th>
+                     <th scope="col">police_id </th>
+                     <th scope="col">witness_id </th>
+                     <th scope="col">location</th>
+                     <th scope="col">date_occurred</th>
+                     <th scope="col">description</th>
+                     <th scope="col">status</th>
                      <th scope="col">Actions</th>
                   </tr>
                </thead>
-               <tbody id="victimTr">
+               <tbody id="AccidentTr">
 
                </tbody>
             </table>
@@ -45,167 +69,200 @@
 
 <script>
 
+
    //get data array object and show in table  using fetch api
-   const getvictim = async () => {
-      const response = await fetch('/api/victims');
+   const getAccident = async () => {
+      const response = await fetch('/api/accident');
       const data = await response.json();
       console.log(data);
       let html = ``;
-      data.data.forEach(victim => {
+      data.data.forEach(Accident => {
          html += `
             <tr>
-               <th scope="row">${victim.victim_id}</th>
-               <td>${victim.name}</td>
-               <td>${victim.age}</td>
-               <td>${victim.gender}</td>
-               <td>${victim.injury_type}</td>
+               <th scope="row">${Accident.case_id}</th>
+               <td>${Accident.victim_id}</td>
+               <td>${Accident.vehicle_id}</td>
+               <td>${Accident.police_id}</td>
+               <td>${Accident.witness_id}</td>
+               <td>${Accident.location}</td>
+               <td>${Accident.date_occurred}</td>
+               <td>${Accident.description}</td>
+               <td>${Accident.status}</td>
                <td>
-                  <button class="btn btn-warning btn-sm"  onclick="editvictim(${victim.victim_id})">Edit</button>
-                  <button class="btn btn-danger btn-sm" onclick="deletevictim(${victim.victim_id})">Delete</button>
+                  <button class="btn btn-warning btn-sm"  onclick="editAccident(${Accident.case_id})">Edit</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteAccident(${Accident.case_id})">Delete</button>
                </td>
             </tr>
          `;
       });
-      victimTr.innerHTML = html;
+      AccidentTr.innerHTML = html;
    }
-   getvictim();
+   getAccident();
 
-   //add victim
-   const addvictim = async () => {
-      const name = document.getElementById('nameVictim').value;
-      const age = document.getElementById('ageVictim').value;
-      const gender = document.getElementById('genderVictim').value;
-      const injury_type = document.getElementById('injury_type').value;
+   //add Accident
+   const addAccident = async () => {
 
-      const response = await fetch('/api/victims', {
+      const victim_id = document.getElementById('AccidentsVictimId').value;
+      const vehicle_id = document.getElementById('AccidentsVehicleId').value;
+      const police_id = document.getElementById('AccidentsPoliceId').value;
+      const witness_id = document.getElementById('AccidentsWitnessId').value;
+      const location = document.getElementById('locationAccident').value;
+      const description = document.getElementById('descriptionAccident').value;
+      const status = document.getElementById('statusAccident').value;
+
+
+
+      const response = await fetch('/api/accident', {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({
-            name: name,
-            age: age,
-            gender: gender,
-            injury_type: injury_type
+            victim_id: victim_id,
+            vehicle_id: vehicle_id,
+            police_id: police_id,
+            witness_id: witness_id,
+            location: location,
+            description: description,
+            status: status
          })
       });
       const data = await response.json();
       console.log(data);
       if (data.status === true) {
-         getvictim();
-         document.getElementById('nameVictim').value = '';
-         document.getElementById('ageVictim').value = '';
-         document.getElementById('genderVictim').value = '';
-         document.getElementById('injury_type').value = '';
+         getAccident();
+         document.getElementById('AccidentsVictimId').value = 'Select Item Victim';
+         document.getElementById('AccidentsVehicleId').value = 'Select Item Vehicle';
+         document.getElementById('AccidentsPoliceId').value = 'Select Item Police';
+         document.getElementById('AccidentsWitnessId').value = 'Select Item Witness';
+         document.getElementById('locationAccident').value = '';
+         document.getElementById('descriptionAccident').value = '';
+         document.getElementById('statusAccident').value = '';
 
          document.getElementById('tosttittle').innerHTML = 'Success';
-         document.getElementById('tostbody').innerHTML = 'victim added successfully';
+         document.getElementById('tostbody').innerHTML = 'Accident added successfully';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       } else {
          document.getElementById('tosttittle').innerHTML = 'Error';
-         document.getElementById('tostbody').innerHTML = 'victim added failed';
+         document.getElementById('tostbody').innerHTML = 'Accident added failed';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       }
    }
-   let victimbtn = document.getElementById('victimbtn');
-   victimbtn.addEventListener('click', addvictim);
+   let Accidentbtn = document.getElementById('Accidentbtn');
+   Accidentbtn.addEventListener('click', addAccident);
 
-   //delete victim
-   const deletevictim = async (id) => {
-      const response = await fetch(`/api/victims/${id}`, {
+   //delete Accident
+   const deleteAccident = async (id) => {
+      const response = await fetch(`/api/accident/${id}`, {
          method: 'DELETE'
       });
       const data = await response.json();
       console.log(data);
       if (data.status === true) {
-         getvictim();
+         getAccident();
          document.getElementById('tosttittle').innerHTML = 'Success';
-         document.getElementById('tostbody').innerHTML = 'victim deleted successfully';
+         document.getElementById('tostbody').innerHTML = 'Accident deleted successfully';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       } else {
          document.getElementById('tosttittle').innerHTML = 'Error';
-         document.getElementById('tostbody').innerHTML = 'victim deleted failed';
+         document.getElementById('tostbody').innerHTML = 'Accident deleted failed';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       }
    }
-   //edit victim in id formType change for eidt victim
-   const editvictim = async (id) => {
-      document.getElementById('formTypeVictim').innerHTML = 'Edit victim';
-      const response = await fetch(`/api/victims/${id}`);
+   //edit Accident in id formType change for eidt Accident
+   const editAccident = async (id) => {
+      document.getElementById('formTypeAccident').innerHTML = 'Edit Accident';
+      const response = await fetch(`/api/accident/${id}`);
       const data = await response.json();
       console.log(data);
-      document.getElementById('nameVictim').value = data.name;
-      document.getElementById('ageVictim').value = data.age;
-      document.getElementById('genderVictim').value = data.gender;
-      document.getElementById('injury_type').value = data.injury_type;
 
-      victimbtn.innerHTML = 'Update';
-      victimbtn.removeEventListener('click', addvictim);
-      victimbtn.addEventListener('click', () => updatevictim(id));
+      document.getElementById('AccidentsVictimId').value = data.victim_id;
+      document.getElementById('AccidentsVehicleId').value = data.vehicle_id;
+      document.getElementById('AccidentsPoliceId').value = data.police_id;
+      document.getElementById('AccidentsWitnessId').value = data.witness_id;
+      document.getElementById('locationAccident').value = data.location;
+      document.getElementById('descriptionAccident').value = data.description;
+      document.getElementById('statusAccident').value = data.status;
+
+      Accidentbtn.innerHTML = 'Update';
+      Accidentbtn.removeEventListener('click', addAccident);
+      Accidentbtn.addEventListener('click', () => updateAccident(id));
    }
 
-   //update victim
-   const updatevictim = async (id) => {
-      const name = document.getElementById('nameVictim').value;
-      const age = document.getElementById('ageVictim').value;
-      const gender = document.getElementById('genderVictim').value;
-      const injury_type = document.getElementById('injury_type').value;
-      const response = await fetch(`/api/victims/${id}`, {
+   //update Accident
+   const updateAccident = async (id) => {
+      const victim_id = document.getElementById('AccidentsVictimId').value;
+      const vehicle_id = document.getElementById('AccidentsVehicleId').value;
+      const police_id = document.getElementById('AccidentsPoliceId').value;
+      const witness_id = document.getElementById('AccidentsWitnessId').value;
+      const location = document.getElementById('locationAccident').value;
+      const description = document.getElementById('descriptionAccident').value;
+      const status = document.getElementById('statusAccident').value;
+      const response = await fetch(`/api/accident/${id}`, {
          method: 'PATCH',
          headers: {
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({
-            name: name,
-            age: age,
-            gender: gender,
-            injury_type: injury_type
+            victim_id: victim_id,
+            vehicle_id: vehicle_id,
+            police_id: police_id,
+            witness_id: witness_id,
+            location: location,
+            description: description,
+            status: status
          })
       });
       const data = await response.json();
       console.log(data);
       if (data.status === true) {
-         getvictim();
-         document.getElementById('nameVictim').value = '';
-         document.getElementById('ageVictim').value = '';
-         document.getElementById('genderVictim').value = '';
-         document.getElementById('injury_type').value = '';
-         document.getElementById('formTypeVictim').innerHTML = 'Create victim';
-         victimbtn.innerHTML = 'Submit';
-         victimbtn.removeEventListener('click', updatevictim);
-         victimbtn.addEventListener('click', addvictim);
+         getAccident();
+         document.getElementById('AccidentsVictimId').value = 'Select Item Victim';
+         document.getElementById('AccidentsVehicleId').value = 'Select Item Vehicle';
+         document.getElementById('AccidentsPoliceId').value = 'Select Item Police';
+         document.getElementById('AccidentsWitnessId').value = 'Select Item Witness';
+         document.getElementById('locationAccident').value = '';
+         document.getElementById('descriptionAccident').value = '';
+         document.getElementById('statusAccident').value = '';
+         document.getElementById('formTypeAccident').innerHTML = 'Create Accident';
+         Accidentbtn.innerHTML = 'Submit';
+         Accidentbtn.removeEventListener('click', updateAccident);
+         Accidentbtn.addEventListener('click', addAccident);
          document.getElementById('tosttittle').innerHTML = 'Success';
-         document.getElementById('tostbody').innerHTML = 'victim updated successfully';
+         document.getElementById('tostbody').innerHTML = 'Accident updated successfully';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       } else {
          document.getElementById('tosttittle').innerHTML = 'Error';
-         document.getElementById('tostbody').innerHTML = 'victim updated failed';
+         document.getElementById('tostbody').innerHTML = 'Accident updated failed';
          var toastLiveExample = document.getElementById('liveToast')
          var toast = new bootstrap.Toast(toastLiveExample)
          toast.show()
       }
    }
-   // add new update when edit victim  avalabe in id createvictim
-   const createvictim2 = document.getElementById('addvictim');
-   createvictim2.addEventListener('click', () => {
-      document.getElementById('nameVictim').value = '';
-      document.getElementById('ageVictim').value = '';
-      document.getElementById('genderVictim').value = '';
-      document.getElementById('injury_type').value = '';
-      document.getElementById('formTypeVictim').innerHTML = 'Create victim';
-      victimbtn.innerHTML = 'Submit';
-      victimbtn.removeEventListener('click', updatevictim);
-      victimbtn.addEventListener('click', addvictim);
+   // add new update when edit Accident  avalabe in id createAccident
+   const createAccident2 = document.getElementById('addAccident');
+   createAccident2.addEventListener('click', () => {
+      document.getElementById('AccidentsVictimId').value = 'Select Item Victim';
+      document.getElementById('AccidentsVehicleId').value = 'Select Item Vehicle';
+      document.getElementById('AccidentsPoliceId').value = 'Select Item Police';
+      document.getElementById('AccidentsWitnessId').value = 'Select Item Witness';
+      document.getElementById('locationAccident').value = '';
+      document.getElementById('descriptionAccident').value = '';
+      document.getElementById('statusAccident').value = '';
+      document.getElementById('formTypeAccident').innerHTML = 'Create Accident';
+      Accidentbtn.innerHTML = 'Submit';
+      Accidentbtn.removeEventListener('click', updateAccident);
+      Accidentbtn.addEventListener('click', addAccident);
    })
 
 
