@@ -33,6 +33,24 @@ export const getAllAccidentJoin = tryCatchWrapper(async function (req, res, next
 
   return res.status(200).json({ data: rows, status: true });
 });
+/**
+ * @description Get All note
+ * @route GET /notes
+ */
+export const getInjure = tryCatchWrapper(async function (req, res, next) {
+
+  let sql = "SELECT COUNT(*) AS count FROM accidentcases WHERE DATE(date_occurred) = CURRENT_DATE();";
+  const  [r = rows ] = await pool.query(sql);
+  let sql2 = "SELECT COUNT(*) AS count FROM accidentcases WHERE DATE(date_occurred) = DATE_SUB(CURDATE(), INTERVAL 1 DAY);";
+  const  [s = rows ] = await pool.query(sql2);
+  let sql3 = "SELECT COUNT(*) AS count FROM accidentcases WHERE YEAR(date_occurred) = YEAR(CURDATE()) AND MONTH(date_occurred) = MONTH(CURDATE());";
+  const  [m = rows ] = await pool.query(sql3);
+  let sql4 = "SELECT COUNT(*) AS count FROM accidentcases WHERE YEAR(date_occurred) = YEAR(CURDATE()) AND MONTH(date_occurred) = MONTH(CURDATE());";
+  const  [t = rows ] = await pool.query(sql4);
+  //if (!r.length) return res.status(204).json({ data: {today: 0, yesterday:0, month:0, total: 0}, status: true });
+
+  return res.status(200).json({ data: {today:r[0].count || 0, yesterday:s[0].count||0, month:m[0].count ||0, total: t[0].count || 0}, status: true });
+});
 
 /**
  * @description Get Single note

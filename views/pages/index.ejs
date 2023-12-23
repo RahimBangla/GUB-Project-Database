@@ -51,15 +51,41 @@
 
                   </div>
 
+                  <div id="c1">
 
+                     <%- include('../components/home'); %>
+                  </div>
 
-                  <%- include('../components/home'); %>
+                  <div id="c2" hidden>
+
                      <%- include('../components/accident'); %>
-                        <%- include('../components/driver'); %>
-                           <%- include('../components/police'); %>
-                              <%- include('../components/vehicle'); %>
-                                 <%- include('../components/victim'); %>
-                                    <%- include('../components/witnesse'); %>
+                  </div>
+
+                  <div id="c3" hidden>
+
+                     <%- include('../components/driver'); %>
+                  </div>
+
+                  <div id="c4" hidden>
+
+                     <%- include('../components/police'); %>
+                  </div>
+
+                  <div id="c5" hidden>
+
+                     <%- include('../components/vehicle'); %>
+                  </div>
+
+                  <div id="c6" hidden>
+
+                     <%- include('../components/victim'); %>
+                  </div>
+
+                  <div id="c7" hidden>
+
+                     <%- include('../components/witnesse'); %>
+                  </div>
+
 
 
 
@@ -74,6 +100,43 @@
    </main>
 
    <script>
+      // hide all c dev 
+      function hideall() {
+         document.getElementById("c1").hidden = true;
+         document.getElementById("c2").hidden = true;
+         document.getElementById("c3").hidden = true;
+         document.getElementById("c4").hidden = true;
+         document.getElementById("c5").hidden = true;
+         document.getElementById("c6").hidden = true;
+         document.getElementById("c7").hidden = true;
+      }
+      // show 
+      function show(id) {
+         hideall();
+         if (id == "c1") {
+            document.getElementById("c1").hidden = false;
+         }
+         else if (id == "c2") {
+            document.getElementById("c2").hidden = false;
+         }
+         else if (id == "c3") {
+            document.getElementById("c3").hidden = false;
+         }
+         else if (id == "c4") {
+            document.getElementById("c4").hidden = false;
+         }
+         else if (id == "c5") {
+            document.getElementById("c5").hidden = false;
+         }
+         else if (id == "c6") {
+            document.getElementById("c6").hidden = false;
+         }
+         else if (id == "c7") {
+            document.getElementById("c7").hidden = false;
+         }
+
+      }
+      document.getElementById("c1").hidden = false;
       try {
          if (localStorage.getItem("status") == "true") {
             document.getElementById("logged").hidden = false;

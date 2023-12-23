@@ -1,6 +1,38 @@
 <div class="container-fluid pb-3 pt-2">
    <div class="d-grid gap-3">
       <div class="bg-body-tertiary border rounded-3">
+         <div class="container-fluid py-2 d-flex gap-3 justify-content-center">
+            <div class="card border-primary" style="max-width: 18rem;">
+               <div class="card-header text-center">Today Injure</div>
+               <div class="card-body text-primary text-center">
+                  <h5 class="card-title" id="todayInjureCount">0</h5>
+               </div>
+            </div>
+            <div class="card border-primary" style="max-width: 18rem;">
+               <div class="card-header text-center">Yesterday Injure</div>
+               <div class="card-body text-primary text-center">
+                  <h5 class="card-title" id="yesterdayInjure">0</h5>
+               </div>
+            </div>
+            <div class="card border-primary" style="max-width: 18rem;">
+               <div class="card-header text-center">This Month Injure</div>
+               <div class="card-body text-primary text-center">
+                  <h5 class="card-title" id="monthInjure">0</h5>
+               </div>
+            </div>
+            <div class="card border-primary" style="max-width: 18rem;">
+               <div class="card-header text-center fw-bold">Total Injure</div>
+               <div class="card-body text-primary text-center">
+                  <h5 class="card-title" id="totalInjureCount" style="color: red;">0</h5>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="container-fluid pb-3 pt-2">
+   <div class="d-grid gap-3">
+      <div class="bg-body-tertiary border rounded-3">
          <div class="container-fluid py-2">
             <h5 class="">Accident List</h5>
             <table class="table">
@@ -54,6 +86,24 @@
       AccidentTable.innerHTML = html;
    }
    getAccidentAll();
+
+   const todayInjure = document.getElementById('todayInjureCount');
+   const yesterdayInjure = document.getElementById('yesterdayInjure');
+   const monthInjure = document.getElementById('monthInjure');
+   const totalInjureCount = document.getElementById('totalInjureCount');
+   //get data array object and show in table  using fetch api
+   const getInjureAll = async () => {
+      const response = await fetch('/api/injure');
+      const data = await response.json();
+      console.log(data);
+      // get count and show in card
+      todayInjure.innerHTML = data.data.today || 0;
+      yesterdayInjure.innerHTML = data.data.yesterday || 0;
+      monthInjure.innerHTML = data.data.month || 0;
+      totalInjureCount.innerHTML = data.data.total || 0;
+   }
+   getInjureAll();
+
 
 
 </script>
