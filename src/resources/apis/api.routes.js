@@ -23,9 +23,10 @@ import {
   deleteAccident,
   getAllAccident,
   getAllAccidentJoin,
+  getAllAccidentJoinSearch,
   getInjure,
   getSingleAccident,
-  updateAccident,
+  updateAccident
 } from "./accident.controllers.js";
 import {
   createDrivers,
@@ -73,6 +74,7 @@ router.route("/vehicle/:id").get(getSingleVehicle).patch(updateVehicle).delete(d
 router.route("/injure").get(getInjure);
 router.route("/accident").get(getAllAccident).post(createAccident);
 router.route("/accident/all").get(getAllAccidentJoin);
+router.route("/accident/all/:search").get(getAllAccidentJoinSearch);
 router.route("/accident/:id").get(getSingleAccident).patch(updateAccident).delete(deleteAccident);
 
 router.route("/drivers").get(getAllDrivers).post(createDrivers);

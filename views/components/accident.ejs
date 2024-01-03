@@ -101,7 +101,7 @@
 
    //add Accident
    const addAccident = async () => {
-
+      const user_id = JSON.parse(localStorage.getItem('username')).data.id;
       const victim_id = document.getElementById('AccidentsVictimId').value;
       const vehicle_id = document.getElementById('AccidentsVehicleId').value;
       const police_id = document.getElementById('AccidentsPoliceId').value;
@@ -109,7 +109,7 @@
       const location = document.getElementById('locationAccident').value;
       const description = document.getElementById('descriptionAccident').value;
       const status = document.getElementById('statusAccident').value;
-
+      console.log(user_id);
 
 
       const response = await fetch('/api/accident', {
@@ -124,7 +124,8 @@
             witness_id: witness_id,
             location: location,
             description: description,
-            status: status
+            status: status,
+            user_id: user_id
          })
       });
       const data = await response.json();

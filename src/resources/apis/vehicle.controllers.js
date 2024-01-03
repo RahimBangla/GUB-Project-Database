@@ -16,7 +16,7 @@ async function getVehicle(id) {
  * @route GET /notes
  */
 export const getAllVehicle = tryCatchWrapper(async function (req, res, next) {
-  let sql = "SELECT * from Vehicles";
+  let sql = "SELECT * from vehicles";
   const [rows] = await pool.query(sql);
   if (!rows.length) return res.status(204).json({ message: "empty list" });
 

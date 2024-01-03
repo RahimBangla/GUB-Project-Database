@@ -33,6 +33,20 @@ export const getAllAccidentJoin = tryCatchWrapper(async function (req, res, next
 
   return res.status(200).json({ data: rows, status: true });
 });
+
+/**
+ * @description Get All note
+ * @route GET /notes
+ */
+export const getAllAccidentJoinSearch = tryCatchWrapper(async function (req, res, next) {
+
+  let sql = `SELECT A.case_id, A.location, A.description, A.date_occurred, A.STATUS, Vi.name AS victim_id, Ve.vehicle_type AS vehicle_id, T.name AS police_id, W.name AS witness_id FROM accidentcases A INNER JOIN victims Vi ON A.victim_id = Vi.victim_id INNER JOIN vehicles Ve ON A.vehicle_id = Ve.vehicle_id INNER JOIN trafficpolice T ON A.police_id = T.police_id INNER JOIN witnesses W ON A.witness_id = W.witness_id WHERE CONCAT(A.case_id, A.location, A.description, A.date_occurred, A.STATUS, Vi.name, Ve.vehicle_type, T.name, W.name) LIKE ? ORDER BY A.date_occurred ASC;`;
+  const [rows] = await pool.query(sql, `%`+req.params.search+`%`);
+  if (!rows.length) return res.status(204).json({ message: "empty list" });
+
+  return res.status(200).json({ data: rows, status: true });
+});
+
 /**
  * @description Get All note
  * @route GET /notes
@@ -45,7 +59,7 @@ export const getInjure = tryCatchWrapper(async function (req, res, next) {
   const  [s = rows ] = await pool.query(sql2);
   let sql3 = "SELECT COUNT(*) AS count FROM accidentcases WHERE YEAR(date_occurred) = YEAR(CURDATE()) AND MONTH(date_occurred) = MONTH(CURDATE());";
   const  [m = rows ] = await pool.query(sql3);
-  let sql4 = "SELECT COUNT(*) AS count FROM accidentcases WHERE YEAR(date_occurred) = YEAR(CURDATE()) AND MONTH(date_occurred) = MONTH(CURDATE());";
+  let sql4 = "SELECT COUNT(*) AS count FROM accidentcases;";
   const  [t = rows ] = await pool.query(sql4);
   //if (!r.length) return res.status(204).json({ data: {today: 0, yesterday:0, month:0, total: 0}, status: true });
 
@@ -70,8 +84,8 @@ export const getSingleAccident = tryCatchWrapper(async function (req, res, next)
  * @route POST /notes
  */
 export const createAccident = tryCatchWrapper(async function (req, res, next) {
-  const { victim_id, vehicle_id, police_id, witness_id, location, description, status } = req.body;
-  if (!victim_id || !vehicle_id || !police_id || !witness_id || !location || !description || !status)
+  const { victim_id, vehicle_id, police_id, witness_id, location, description, status, user_id } = req.body;
+  if (!victim_id || !vehicle_id || !police_id || !witness_id || !location || !description || !status || !user_id)
   return next(createCustomError("All fields are required", 400));
   console.log(`${victim_id}, ${vehicle_id}, ${police_id}, ${witness_id}, ${location}, ${description}, ${status}`);
   let sql = "INSERT INTO accidentcases ( victim_id, vehicle_id, police_id, witness_id, location, description, status) VALUES ( ?, ?, ?, ?, ?, ?, ?)";

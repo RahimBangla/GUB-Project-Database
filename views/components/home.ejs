@@ -30,11 +30,21 @@
       </div>
    </div>
 </div>
+<div id="chart">
+   <div id="timeline-chart"></div>
+</div>
 <div class="container-fluid pb-3 pt-2">
    <div class="d-grid gap-3">
       <div class="bg-body-tertiary border rounded-3">
          <div class="container-fluid py-2">
             <h5 class="">Accident List</h5>
+            <div class="d-flex justify-content-end">
+               <div class="input-group mb-3">
+                  <input type="text" class="form-control" placeholder="Search" aria-label="Search"
+                     aria-describedby="accidentSearchBtn" id="accidentSearch">
+                  <button class="btn btn-outline-secondary" type="button" id="accidentSearchBtn">Search</button>
+               </div>
+            </div>
             <table class="table">
                <thead>
                   <tr>
@@ -103,7 +113,31 @@
       totalInjureCount.innerHTML = data.data.total || 0;
    }
    getInjureAll();
-
-
+   //get data array object and show in table  using search fetch api
+   const accidentSearch = document.getElementById('accidentSearch');
+   const accidentSearchBtn = document.getElementById('accidentSearchBtn');
+   accidentSearchBtn.addEventListener('click', async () => {
+      const response = await fetch(`/api/accident/all/${accidentSearch.value}`);
+      const data = await response.json();
+      console.log(data);
+      let html = ``;
+      data.data.forEach(Accident => {
+         var date = new Date(Accident.date_occurred);
+         html += `
+            <tr>
+               <th scope="row">${Accident.case_id}</th>
+               <td>${Accident.victim_id}</td>
+               <td>${Accident.vehicle_id}</td>
+               <td>${Accident.police_id}</td>
+               <td>${Accident.witness_id}</td>
+               <td>${Accident.location}</td>
+               <td>${date.getDate()}-${date.getMonth()}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} </td>
+               <td>${Accident.description}</td>
+               <td>${Accident.status}</td>
+            </tr>
+         `;
+      });
+      AccidentTable.innerHTML = html;
+   });
 
 </script>
