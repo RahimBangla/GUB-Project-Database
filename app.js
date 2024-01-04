@@ -16,6 +16,7 @@ app.use(express.json());
 
 // index page
 app.get('/', function(req, res) {
+  console.log("Visisted", new Date());
   var mascots = [
     { name: 'Sammy', organization: "DigitalOcean", birth_year: 2012},
     { name: 'Tux', organization: "Linux", birth_year: 1996},

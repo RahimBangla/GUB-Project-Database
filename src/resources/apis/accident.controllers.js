@@ -24,14 +24,14 @@ export const getCountAccident = tryCatchWrapper(async function (req, res, next) 
   var lastDate = new Date().setDate(new Date().getDate() - 17);
   var x = new Date(lastDate).getTime();
   while (i < count) {
-    console.log(formatDate(new Date(x)));
+    // console.log(formatDate(new Date(x)));
     const [rows] = await pool.query(sql, [formatDate(new Date(x-86400000)), formatDate(new Date(x))]);
-    console.log(rows[0].countValue);
+    // console.log(rows[0].countValue);
      series.push([x, rows[0].countValue]);
      x += 86400000;
      i++;
   }
-  console.log(series);
+  // console.log(series);
   // console.log(rows.countValue);
   // data.push(rows.countValue || 0);
   return res.status(200).json({ data: series, status: true });
