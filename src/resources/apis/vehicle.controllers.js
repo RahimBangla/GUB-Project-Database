@@ -6,7 +6,8 @@ import { tryCatchWrapper } from "../../middlewares/tryCatchWrapper.js";
  * @returns note object
  */
 async function getVehicle(id) {
-  let sql = "SELECT * FROM Vehicles WHERE vehicle_id = ?";
+  console.log(id);
+  let sql = "SELECT * FROM vehicles WHERE vehicle_id = ?";
   const [rows] = await pool.query(sql, [id]);
   return rows[0];
 }
@@ -31,7 +32,7 @@ export const getSingleVehicle = tryCatchWrapper(async function (req, res, next) 
   const { id } = req.params;
 
   const note = await getVehicle(id);
-  if (!note) return next(createCustomError("note not found", 404));
+  if (!note) return next(createCustomError("Vehicle not found", 404));
 
   return res.status(200).json(note);
 });
@@ -64,7 +65,7 @@ export const updateVehicle = tryCatchWrapper(async function (req, res, next) {
     return next(createCustomError("All fields are required", 400));
 
   const note = await getVehicle(id);
-  if (!note) return next(createCustomError("note not found", 404));
+  if (!note) return next(createCustomError("Vehicle not found", 404));
 
   let sql = "UPDATE vehicles SET vehicle_type = ?, mechanical_problem = ?, license_number = ? WHERE vehicle_id = ?";
   await pool.query(sql, [vehicle_type, mechanical_problem, license_number, id]);
