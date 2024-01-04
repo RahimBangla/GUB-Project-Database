@@ -24,6 +24,7 @@ import {
   getAllAccident,
   getAllAccidentJoin,
   getAllAccidentJoinSearch,
+  getCountAccident,
   getInjure,
   getSingleAccident,
   updateAccident
@@ -73,6 +74,7 @@ router.route("/vehicle/:id").get(getSingleVehicle).patch(updateVehicle).delete(d
 
 router.route("/injure").get(getInjure);
 router.route("/accident").get(getAllAccident).post(createAccident);
+router.route("/accident/chart").get(getCountAccident);
 router.route("/accident/all").get(getAllAccidentJoin);
 router.route("/accident/all/:search").get(getAllAccidentJoinSearch);
 router.route("/accident/:id").get(getSingleAccident).patch(updateAccident).delete(deleteAccident);

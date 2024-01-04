@@ -15,6 +15,38 @@ async function getAccident(id) {
  * @description Get All note
  * @route GET /notes
  */
+export const getCountAccident = tryCatchWrapper(async function (req, res, next) {
+  var count = 18;
+  var series = [];
+  let sql = "SELECT count(*) as countValue from accidentcases where date_occurred BETWEEN ? AND ? ";
+  //if (!rows.length) return res.status(204).json({ message: "empty list" });
+  var i = 0;
+  var lastDate = new Date().setDate(new Date().getDate() - 17);
+  var x = new Date(lastDate).getTime();
+  while (i < count) {
+    console.log(formatDate(new Date(x)));
+    const [rows] = await pool.query(sql, [formatDate(new Date(x-86400000)), formatDate(new Date(x))]);
+    console.log(rows[0].countValue);
+     series.push([x, rows[0].countValue]);
+     x += 86400000;
+     i++;
+  }
+  console.log(series);
+  // console.log(rows.countValue);
+  // data.push(rows.countValue || 0);
+  return res.status(200).json({ data: series, status: true });
+});
+const formatDate = (date) =>{
+  var year = date.getFullYear();
+  var month = ('0' + (date.getMonth() + 1)).slice(-2); // Months are zero-based
+  var day = ('0' + date.getDate()).slice(-2);
+
+  return year + '-' + month + '-' + day;
+}
+/**
+ * @description Get All note
+ * @route GET /notes
+ */
 export const getAllAccident = tryCatchWrapper(async function (req, res, next) {
   let sql = "SELECT * from accidentcases";
   const [rows] = await pool.query(sql);
