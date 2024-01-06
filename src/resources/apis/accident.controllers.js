@@ -16,19 +16,19 @@ async function getAccident(id) {
  * @route GET /notes
  */
 export const getCountAccident = tryCatchWrapper(async function (req, res, next) {
-  var count = 18;
+  var count = 19;
   var series = [];
-  let sql = "SELECT count(*) as countValue from accidentcases where date_occurred BETWEEN ? AND ? ";
+  let sql = "SELECT count(*) as countValue from accidentcases where DATE(date_occurred) = ? ";
   //if (!rows.length) return res.status(204).json({ message: "empty list" });
   var i = 0;
-  var lastDate = new Date().setDate(new Date().getDate() - 17);
+  var lastDate = new Date().setDate(new Date().getDate() - 18);
   var x = new Date(lastDate).getTime();
   while (i < count) {
-    // console.log(formatDate(new Date(x)));
-    const [rows] = await pool.query(sql, [formatDate(new Date(x-86400000)), formatDate(new Date(x))]);
-    // console.log(rows[0].countValue);
-     series.push([x, rows[0].countValue]);
-     x += 86400000;
+    console.log(formatDate(new Date(x)));
+    const [rows] = await pool.query(sql, [ formatDate(new Date(x))]);
+    console.log(rows[0].countValue);
+    series.push([x, rows[0].countValue]);
+    x += 86400000;
      i++;
   }
   // console.log(series);
